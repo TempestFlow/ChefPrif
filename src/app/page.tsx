@@ -3,6 +3,7 @@
 import { useState } from "react";
 import IngredientInput from "@/components/IngredientInput";
 import IngredientList from "@/components/IngredientList";
+import RecipeCard from "@/components/RecipeCard";
 import { Recipe } from "@/types/recipe";
 
 export default function Home() {
@@ -153,70 +154,5 @@ export default function Home() {
         )}
       </div>
     </div>
-  );
-}
-
-// Recepto kortelė
-function RecipeCard({ recipe }: { recipe: Recipe }) {
-  return (
-    <article className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
-      {/* Pavadinimas ir porcijos */}
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-          {recipe.title}
-        </h3>
-        <span className="shrink-0 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-          {recipe.servings} porcij{recipe.servings === 1 ? "a" : "os"}
-        </span>
-      </div>
-
-      {/* Kalorijos */}
-      <p className="mb-4 text-sm text-zinc-500 dark:text-zinc-400">
-        ~{recipe.estimated_calories} kcal / porcijai
-      </p>
-
-      {/* Ingredientai */}
-      <div className="mb-4">
-        <h4 className="mb-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          Ingredientai
-        </h4>
-        <ul className="space-y-1">
-          {recipe.ingredients.map((ing, i) => (
-            <li key={i} className="text-sm text-zinc-600 dark:text-zinc-400">
-              • {ing}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Trūkstami ingredientai */}
-      {recipe.missing_ingredients.length > 0 && (
-        <div className="mb-4 rounded-lg bg-amber-50 px-4 py-3 dark:bg-amber-900/20">
-          <h4 className="mb-1 text-sm font-medium text-amber-700 dark:text-amber-400">
-            Trūkstami ingredientai
-          </h4>
-          <p className="text-sm text-amber-600 dark:text-amber-500">
-            {recipe.missing_ingredients.join(", ")}
-          </p>
-        </div>
-      )}
-
-      {/* Gaminimo žingsniai */}
-      <div>
-        <h4 className="mb-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          Gaminimo žingsniai
-        </h4>
-        <ol className="space-y-2">
-          {recipe.steps.map((step, i) => (
-            <li key={i} className="flex gap-3 text-sm text-zinc-600 dark:text-zinc-400">
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-xs font-medium text-green-700 dark:bg-green-900/40 dark:text-green-400">
-                {i + 1}
-              </span>
-              {step}
-            </li>
-          ))}
-        </ol>
-      </div>
-    </article>
   );
 }
