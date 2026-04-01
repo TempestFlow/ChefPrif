@@ -1,16 +1,20 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { filterIngredients, INGREDIENTS } from "@/data/ingredients";
+import { filterIngredients } from "@/data/ingredients";
 
 interface IngredientInputProps {
   onAdd: (ingredient: string) => void;
   addedIngredients?: string[];
+  editingIngredient?: string | null;
+  onReplace?: (oldIngredient: string, newIngredient: string) => void;
 }
 
 export default function IngredientInput({
   onAdd,
   addedIngredients = [],
+  editingIngredient = null,
+  onReplace,
 }: IngredientInputProps) {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -25,21 +29,46 @@ export default function IngredientInput({
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
 
+  // When editingIngredient changes, pre-fill the fields
+  useEffect(() => {
+    if (!editingIngredient) return;
+    const parts = editingIngredient.split(" - ");
+    const name = parts[0] ?? "";
+    const quantityPart = parts[1] ?? "";
+
+    setQuery(name);
+    setSelectedIngredient(name);
+    setShowDropdown(false);
+
+    if (quantityPart && quantityPart !== "pasirinktinis kiekis") {
+      const tokens = quantityPart.trim().split(" ");
+      const unitToken = tokens[tokens.length - 1];
+      const quantityToken = tokens.slice(0, -1).join(" ");
+      setQuantity(quantityToken);
+      setUnit(unitToken);
+    } else {
+      setQuantity("");
+      setUnit("g");
+    }
+  }, [editingIngredient]);
+
   // AC-1: Pradėjus vesti tekstą (bent 2 raidės), rodomas dropdown
   useEffect(() => {
-    if (query.length >= 2) {
-      const addedNames = addedIngredients.map((i) => i.split(" - ")[0]);
+    if (query.length >= 2 && !selectedIngredient) {
+      const addedNames = addedIngredients
+        .filter((i) => i !== editingIngredient)
+        .map((i) => i.split(" - ")[0]);
       const filtered = filterIngredients(query).filter(
         (ing) => !addedNames.includes(ing)
       );
       setSuggestions(filtered);
-      setShowDropdown(true);
+      setShowDropdown(filtered.length > 0);
     } else {
       setSuggestions([]);
       setShowDropdown(false);
     }
     setHighlightedIndex(-1);
-  }, [query, addedIngredients]);
+  }, [query, addedIngredients, editingIngredient, selectedIngredient]);
 
   // Uždaryti dropdown paspaudus šalia
   useEffect(() => {
@@ -65,28 +94,25 @@ export default function IngredientInput({
     setHighlightedIndex(-1);
   }
 
-  // AC-2: Pridėti mygtukas aktyvus tik kai pasirinktas ingredientas iš sąrašo
   function handleAdd() {
-    if (!selectedIngredient) {
-      return;
-    }
+    if (!selectedIngredient) return;
 
     const alreadyAdded = addedIngredients.some(
-      (ing) => ing.split(" - ")[0] === selectedIngredient
+      (ing) => ing !== editingIngredient && ing.split(" - ")[0] === selectedIngredient
     );
-
-    if (alreadyAdded) {
-      return;
-    }
+    if (alreadyAdded) return;
 
     const quantityText = quantity.trim()
       ? `${quantity.trim()} ${unit}`
       : "pasirinktinis kiekis";
     const ingredientWithQuantity = `${selectedIngredient} - ${quantityText}`;
 
-    onAdd(ingredientWithQuantity);
+    if (editingIngredient && onReplace) {
+      onReplace(editingIngredient, ingredientWithQuantity);
+    } else {
+      onAdd(ingredientWithQuantity);
+    }
 
-    // AC-4: Po pridėjimo laukelis išvalomas
     setQuery("");
     setSelectedIngredient(null);
     setQuantity("");
@@ -98,7 +124,6 @@ export default function IngredientInput({
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setQuery(value);
-    // Jei vartotojas keičia tekstą, atšaukiame pasirinkimą
     setSelectedIngredient(null);
   }
 
@@ -140,13 +165,12 @@ export default function IngredientInput({
     }
   }, [highlightedIndex]);
 
-  // AC-3: Ar rodyti klaidos pranešimą
   const isQueryLongEnough = query.length >= 2;
   const noMatchFound =
     isQueryLongEnough && suggestions.length === 0 && !selectedIngredient;
 
-  // AC-2: Mygtukas aktyvus tik su pasirinktu ingredientu
   const isAddDisabled = !selectedIngredient;
+  const isEditing = !!editingIngredient;
 
   return (
     <div className="w-full max-w-md">
@@ -194,7 +218,7 @@ export default function IngredientInput({
                         : "text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700"
                     }`}
                     onMouseDown={(e) => {
-                      e.preventDefault(); // Kad input neprarastų fokuso prieš click
+                      e.preventDefault();
                       handleSelectIngredient(ingredient);
                     }}
                     onMouseEnter={() => setHighlightedIndex(index)}
@@ -218,10 +242,15 @@ export default function IngredientInput({
             <input
               id="ingredient-quantity"
               type="number"
-              min="0"
+              min="1"
+              max="1000"
               step="any"
+              onKeyDown={(e) => { if (e.key === "-" || e.key === "e") e.preventDefault(); }}
               value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === "" || (Number(val) >= 1 && Number(val) <= 1000)) setQuantity(val);
+              }}
               placeholder="pvz.: 500"
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
             />
@@ -257,10 +286,12 @@ export default function IngredientInput({
             className={`w-full rounded-lg px-5 py-2.5 text-sm font-medium transition-colors ${
               isAddDisabled
                 ? "cursor-not-allowed bg-zinc-200 text-zinc-400 dark:bg-zinc-700 dark:text-zinc-500"
+                : isEditing
+                ? "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800"
                 : "bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
             }`}
           >
-            Pridėti
+            {isEditing ? "Pakeisti ingredientą" : "Pridėti"}
           </button>
         </div>
 
