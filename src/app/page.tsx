@@ -10,6 +10,7 @@ const isDemo = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_
 
 export default function Home() {
   const [ingredients, setIngredients] = useState<string[]>([]);
+  const [editingIngredient, setEditingIngredient] = useState<string | null>(null);
   // Task 2.3 (GUI): receptų būsena
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +24,19 @@ export default function Home() {
 
   function handleRemoveIngredient(ingredient: string) {
     setIngredients((prev) => prev.filter((i) => i !== ingredient));
+  }
+
+  function handleRemoveAllIngredients() {
+    setIngredients([]);
+  }
+
+  function handleEditIngredient(ingredient: string) {
+    setEditingIngredient(ingredient);
+  }
+
+  function handleReplaceIngredient(oldIngredient: string, newIngredient: string) {
+    setIngredients((prev) => prev.map((i) => (i === oldIngredient ? newIngredient : i)));
+    setEditingIngredient(null);
   }
 
   // Task 2.3 (GUI): "Ieškoti receptų" mygtuko logika
@@ -158,6 +172,8 @@ export default function Home() {
             <IngredientInput
               onAdd={handleAddIngredient}
               addedIngredients={ingredients}
+              editingIngredient={editingIngredient}
+              onReplace={handleReplaceIngredient}
             />
           </section>
 
@@ -169,16 +185,18 @@ export default function Home() {
             <IngredientList
               ingredients={ingredients}
               onRemove={handleRemoveIngredient}
+              onRemoveAll={handleRemoveAllIngredients}
+              onEdit={handleEditIngredient}
             />
           </section>
 
           {/* Task 2.3 (GUI): "Ieškoti receptų" mygtukas */}
-          <div className="mt-8">
+          {ingredients.length > 0 && <div className="mt-8">
             <button
               type="button"
               onClick={handleGenerateRecipes}
               disabled={isLoading || ingredients.length === 0}
-              className={`w-full rounded-lg px-6 py-3 text-sm font-medium transition-colors ${
+              className={`w-full max-w-md rounded-lg px-6 py-3 text-sm font-medium transition-colors ${
                 isLoading || ingredients.length === 0
                   ? "cursor-not-allowed bg-gray-400 text-gray-200 dark:bg-gray-600 dark:text-gray-400"
                   : "bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
@@ -206,7 +224,7 @@ export default function Home() {
                 {error}
               </p>
             )}
-          </div>
+          </div>}
 
           {/* Sugeneruoti receptai mygtukas - rodomas kai yra sugeneruoti arba išsaugoti receptai */}
           {(hasRecipes || showSaved) && (
@@ -214,7 +232,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setShowSaved(false)}
-                className="w-full rounded-lg px-6 py-3 text-sm font-medium bg-orange-500 text-white hover:bg-orange-600 active:bg-orange-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full max-w-md rounded-lg px-6 py-3 text-sm font-medium bg-orange-500 text-white hover:bg-orange-600 active:bg-orange-700 transition-colors flex items-center justify-center gap-2"
               >
                 <span>🍽️</span>
                 Sugeneruoti receptai
@@ -227,7 +245,7 @@ export default function Home() {
             <button
               type="button"
               onClick={handleShowSavedRecipes}
-              className="w-full rounded-lg px-6 py-3 text-sm font-medium bg-rose-500 text-white hover:bg-rose-600 active:bg-rose-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full max-w-md rounded-lg px-6 py-3 text-sm font-medium bg-rose-500 text-white hover:bg-rose-600 active:bg-rose-700 transition-colors flex items-center justify-center gap-2"
             >
               <span>❤️</span>
               Išsaugoti receptai

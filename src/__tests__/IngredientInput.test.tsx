@@ -18,7 +18,7 @@ describe("IngredientInput", () => {
   describe("AC-1: Dropdown su bent 2 raidėmis", () => {
     it("nerodo dropdown kai įvesta mažiau nei 2 raidės", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
 
       fireEvent.change(input, { target: { value: "P" } });
       expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
@@ -26,7 +26,7 @@ describe("IngredientInput", () => {
 
     it("rodo dropdown kai įvestos 2+ raidės ir yra atitikmenų", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
 
       fireEvent.change(input, { target: { value: "Po" } });
       expect(screen.getByRole("listbox")).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe("IngredientInput", () => {
 
     it("Pridėti mygtukas aktyvus pasirinkus ingredientą", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
 
       fireEvent.change(input, { target: { value: "Pomid" } });
       fireEvent.mouseDown(screen.getByText("Pomidoras"));
@@ -55,7 +55,7 @@ describe("IngredientInput", () => {
 
     it("iškviečia onAdd su pasirinktu ingredientu ir pasirinktinio kiekio tekstu", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
 
       fireEvent.change(input, { target: { value: "Sviest" } });
       fireEvent.mouseDown(screen.getByText("Sviestas"));
@@ -66,7 +66,7 @@ describe("IngredientInput", () => {
 
     it("iškviečia onAdd su kiekiu ir pasirinktu vienetu", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
       const quantityInput = screen.getByLabelText(/kiekis/i);
       const unitSelect = screen.getByLabelText(/vienetai/i);
 
@@ -84,7 +84,7 @@ describe("IngredientInput", () => {
   describe("AC-3: Klaidos pranešimas", () => {
     it("rodo klaidos pranešimą kai ingredientas nerastas", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
 
       fireEvent.change(input, { target: { value: "xyzneegzistuoja" } });
       expect(screen.getByRole("alert")).toHaveTextContent(
@@ -94,7 +94,7 @@ describe("IngredientInput", () => {
 
     it("nerodo klaidos kai yra atitikmenų", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
 
       fireEvent.change(input, { target: { value: "Pomid" } });
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
@@ -105,7 +105,7 @@ describe("IngredientInput", () => {
   describe("AC-4: Laukelis išvalomas", () => {
     it("išvalo laukelį po sėkmingo pridėjimo", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i) as HTMLInputElement;
+      const input = screen.getByLabelText(/įveskite ingredientą/i) as HTMLInputElement;
 
       fireEvent.change(input, { target: { value: "Pomid" } });
       fireEvent.mouseDown(screen.getByText("Pomidoras"));
@@ -115,11 +115,72 @@ describe("IngredientInput", () => {
     });
   });
 
+  // Kiekio validacija
+  describe("Kiekio validacija", () => {
+    it("neleidžia įvesti neigiamo skaičiaus", () => {
+      renderComponent();
+      const quantityInput = screen.getByLabelText(/kiekis/i) as HTMLInputElement;
+
+      fireEvent.change(quantityInput, { target: { value: "-5" } });
+      expect(quantityInput.value).toBe("");
+    });
+
+    it("neleidžia įvesti 0", () => {
+      renderComponent();
+      const quantityInput = screen.getByLabelText(/kiekis/i) as HTMLInputElement;
+
+      fireEvent.change(quantityInput, { target: { value: "0" } });
+      expect(quantityInput.value).toBe("");
+    });
+
+    it("neleidžia įvesti skaičiaus didesnio nei 1000", () => {
+      renderComponent();
+      const quantityInput = screen.getByLabelText(/kiekis/i) as HTMLInputElement;
+
+      fireEvent.change(quantityInput, { target: { value: "1001" } });
+      expect(quantityInput.value).toBe("");
+    });
+
+    it("leidžia įvesti 1000", () => {
+      renderComponent();
+      const quantityInput = screen.getByLabelText(/kiekis/i) as HTMLInputElement;
+
+      fireEvent.change(quantityInput, { target: { value: "1000" } });
+      expect(quantityInput.value).toBe("1000");
+    });
+
+    it("leidžia įvesti teigiamą skaičių tarp 1 ir 1000", () => {
+      renderComponent();
+      const quantityInput = screen.getByLabelText(/kiekis/i) as HTMLInputElement;
+
+      fireEvent.change(quantityInput, { target: { value: "500" } });
+      expect(quantityInput.value).toBe("500");
+    });
+
+    it("blokuoja minuso simbolį klaviatūroje", () => {
+      renderComponent();
+      const quantityInput = screen.getByLabelText(/kiekis/i) as HTMLInputElement;
+
+      fireEvent.keyDown(quantityInput, { key: "-" });
+      fireEvent.change(quantityInput, { target: { value: "" } });
+      expect(quantityInput.value).toBe("");
+    });
+
+    it("blokuoja 'e' simbolį klaviatūroje", () => {
+      renderComponent();
+      const quantityInput = screen.getByLabelText(/kiekis/i) as HTMLInputElement;
+
+      fireEvent.keyDown(quantityInput, { key: "e" });
+      fireEvent.change(quantityInput, { target: { value: "" } });
+      expect(quantityInput.value).toBe("");
+    });
+  });
+
   // Papildomi testai
   describe("Papildomi testai", () => {
     it("nerodo jau pridėtų ingredientų dropdown'e", () => {
       renderComponent(["Pomidoras"]);
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
 
       fireEvent.change(input, { target: { value: "Pomid" } });
 
@@ -130,7 +191,7 @@ describe("IngredientInput", () => {
 
     it("mygtukas tampa neaktyvus kai vartotojas pakeičia tekstą po pasirinkimo", () => {
       renderComponent();
-      const input = screen.getByPlaceholderText(/pvz/i);
+      const input = screen.getByLabelText(/įveskite ingredientą/i);
 
       // Pasirinkti
       fireEvent.change(input, { target: { value: "Pomid" } });
