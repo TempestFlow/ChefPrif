@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import IngredientInput from "@/components/IngredientInput";
 import IngredientList from "@/components/IngredientList";
 import RecipeCard from "@/components/RecipeCard";
 import { Recipe } from "@/types/recipe";
+
+const isDemo = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://demo.supabase.co';
 
 export default function Home() {
   const [ingredients, setIngredients] = useState<string[]>([]);
@@ -12,6 +14,8 @@ export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
+  const [showSaved, setShowSaved] = useState(false);
 
   function handleAddIngredient(ingredient: string) {
     setIngredients((prev) => [...prev, ingredient]);
@@ -40,6 +44,7 @@ export default function Home() {
       }
 
       setRecipes(data.recipes);
+      setShowSaved(false); // Switch back to generated recipes
     } catch (err) {
       // AC-4: Klaida parodoma vartotojui
       const message =
@@ -50,14 +55,79 @@ export default function Home() {
     }
   }
 
+  async function handleShowSavedRecipes() {
+    setError(null);
+    await loadSavedRecipes();
+    setShowSaved(true);
+  }
+
+  async function loadSavedRecipes() {
+    if (isDemo) {
+      const stored = localStorage.getItem('savedRecipes');
+      if (stored) {
+        setSavedRecipes(JSON.parse(stored));
+      } else {
+        setSavedRecipes([]);
+      }
+    } else {
+      try {
+        const response = await fetch("/api/recipes/saved");
+        const data = await response.json();
+        if (response.ok) {
+          setSavedRecipes(data.recipes);
+        } else {
+          setError(data.error ?? "Nepavyko įkelti išsaugotų receptų.");
+        }
+      } catch (err) {
+        setError("Nepavyko įkelti išsaugotų receptų.");
+      }
+    }
+  }
+
+  function handleToggleSave(recipe: Recipe) {
+    const isCurrentlySaved = savedRecipes.some(r => r.title === recipe.title);
+    if (isCurrentlySaved) {
+      // unsave
+      const newSaved = savedRecipes.filter(r => r.title !== recipe.title);
+      setSavedRecipes(newSaved);
+      if (isDemo) {
+        localStorage.setItem('savedRecipes', JSON.stringify(newSaved));
+      } else {
+        fetch('/api/recipes/unsave', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ recipe }),
+        });
+      }
+    } else {
+      // save
+      const newSaved = [...savedRecipes, recipe];
+      setSavedRecipes(newSaved);
+      if (isDemo) {
+        localStorage.setItem('savedRecipes', JSON.stringify(newSaved));
+      } else {
+        fetch('/api/recipes/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ recipe }),
+        });
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadSavedRecipes();
+  }, []);
+
   const hasRecipes = recipes !== null;
+  const hasContent = hasRecipes || showSaved;
 
   return (
     <div className="min-h-screen bg-zinc-50 font-sans dark:bg-zinc-950">
       {/* Kai nėra receptų — centruotas layout; kai yra — dviejų stulpelių */}
       <div
         className={`flex min-h-screen ${
-          hasRecipes
+          hasContent
             ? "flex-col lg:flex-row items-start"
             : "items-start justify-center"
         }`}
@@ -65,7 +135,7 @@ export default function Home() {
         {/* Kairė pusė — ingredientai */}
         <main
           className={`px-4 py-12 sm:px-8 ${
-            hasRecipes
+            hasContent
               ? "w-full lg:w-80 xl:w-96 lg:min-h-screen lg:border-r border-zinc-200 dark:border-zinc-800 shrink-0"
               : "w-full max-w-2xl"
           }`}
@@ -103,51 +173,69 @@ export default function Home() {
           </section>
 
           {/* Task 2.3 (GUI): "Ieškoti receptų" mygtukas */}
-          {ingredients.length > 0 && (
-            <div className="mt-8">
-              <button
-                type="button"
-                onClick={handleGenerateRecipes}
-                disabled={isLoading}
-                className={`w-full rounded-lg px-6 py-3 text-sm font-medium transition-colors ${
-                  isLoading
-                    ? "cursor-not-allowed bg-green-400 text-white dark:bg-green-800"
-                    : "bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
-                }`}
-              >
-                {isLoading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    Generuojama...
-                  </span>
-                ) : (
-                  "Ieškoti receptų"
-                )}
-              </button>
-
-              {/* AC-4: Klaidos pranešimas */}
-              {error && (
-                <p
-                  className="mt-3 text-sm text-red-600 dark:text-red-400"
-                  role="alert"
-                >
-                  {error}
-                </p>
+          <div className="mt-8">
+            <button
+              type="button"
+              onClick={handleGenerateRecipes}
+              disabled={isLoading || ingredients.length === 0}
+              className={`w-full rounded-lg px-6 py-3 text-sm font-medium transition-colors ${
+                isLoading || ingredients.length === 0
+                  ? "cursor-not-allowed bg-gray-400 text-gray-200 dark:bg-gray-600 dark:text-gray-400"
+                  : "bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
+              }`}
+            >
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Generuojama...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <span>🔍</span>
+                  Ieškoti receptų
+                </span>
               )}
-            </div>
-          )}
+            </button>
+
+            {/* AC-4: Klaidos pranešimas */}
+            {error && (
+              <p
+                className="mt-3 text-sm text-red-600 dark:text-red-400"
+                role="alert"
+              >
+                {error}
+              </p>
+            )}
+          </div>
+
+          {/* Išsaugoti receptai mygtukas */}
+          <div className="mt-8">
+            <button
+              type="button"
+              onClick={handleShowSavedRecipes}
+              className="w-full rounded-lg px-6 py-3 text-sm font-medium bg-rose-500 text-white hover:bg-rose-600 active:bg-rose-700 transition-colors flex items-center justify-center gap-2"
+            >
+              <span>❤️</span>
+              Išsaugoti receptai
+            </button>
+          </div>
         </main>
 
-        {/* Dešinė pusė — receptai (tik kai sugeneruota) */}
-        {hasRecipes && (
+        {/* Dešinė pusė — receptai (kai sugeneruota arba išsaugoti) */}
+        {(hasRecipes || showSaved) && (
           <section className="flex-1 px-4 py-12 sm:px-8">
             <h2 className="mb-6 text-lg font-semibold text-zinc-800 dark:text-zinc-200">
-              Sugeneruoti receptai ({recipes.length})
+              {showSaved ? `Išsaugoti receptai (${savedRecipes.length})` : `Sugeneruoti receptai (${recipes?.length || 0})`}
             </h2>
 
             <div className="flex flex-col gap-6">
-              {recipes.map((recipe, index) => (
-                <RecipeCard key={index} recipe={recipe} />
+              {(showSaved ? savedRecipes : recipes)?.map((recipe, index) => (
+                <RecipeCard
+                  key={index}
+                  recipe={recipe}
+                  isSaved={savedRecipes.some(r => r.title === recipe.title)}
+                  onToggleSave={() => handleToggleSave(recipe)}
+                />
               ))}
             </div>
           </section>
