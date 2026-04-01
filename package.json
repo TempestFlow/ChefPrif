@@ -8,10 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
-  "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "next": "16.1.6",
+    "openai": "^6.33.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
@@ -31,6 +32,4 @@
     "ts-jest": "^29.4.6",
     "typescript": "^5"
   }
-  
 }
-
