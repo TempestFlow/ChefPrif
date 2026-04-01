@@ -53,7 +53,7 @@ describe("IngredientInput", () => {
       expect(button).not.toBeDisabled();
     });
 
-    it("iškviečia onAdd su pasirinktu ingredientu", () => {
+    it("iškviečia onAdd su pasirinktu ingredientu ir pasirinktinio kiekio tekstu", () => {
       renderComponent();
       const input = screen.getByPlaceholderText(/pvz/i);
 
@@ -61,7 +61,22 @@ describe("IngredientInput", () => {
       fireEvent.mouseDown(screen.getByText("Sviestas"));
       fireEvent.click(screen.getByRole("button", { name: /pridėti/i }));
 
-      expect(mockOnAdd).toHaveBeenCalledWith("Sviestas");
+      expect(mockOnAdd).toHaveBeenCalledWith("Sviestas - pasirinktinis kiekis");
+    });
+
+    it("iškviečia onAdd su kiekiu ir pasirinktu vienetu", () => {
+      renderComponent();
+      const input = screen.getByPlaceholderText(/pvz/i);
+      const quantityInput = screen.getByLabelText(/kiekis/i);
+      const unitSelect = screen.getByLabelText(/vienetai/i);
+
+      fireEvent.change(input, { target: { value: "Pomid" } });
+      fireEvent.mouseDown(screen.getByText("Pomidoras"));
+      fireEvent.change(quantityInput, { target: { value: "500" } });
+      fireEvent.change(unitSelect, { target: { value: "g" } });
+      fireEvent.click(screen.getByRole("button", { name: /pridėti/i }));
+
+      expect(mockOnAdd).toHaveBeenCalledWith("Pomidoras - 500 g");
     });
   });
 
