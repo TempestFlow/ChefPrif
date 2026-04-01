@@ -1,14 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import IngredientInput from "@/components/IngredientInput";
 import IngredientList from "@/components/IngredientList";
 import RecipeCard from "@/components/RecipeCard";
 import { Recipe } from "@/types/recipe";
+import { supabase } from "@/lib/supabase";
 
 const isDemo = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://demo.supabase.co';
 
 export default function Home() {
+  const router = useRouter();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [editingIngredient, setEditingIngredient] = useState<string | null>(null);
   // Task 2.3 (GUI): receptų būsena
@@ -130,8 +134,20 @@ export default function Home() {
   }
 
   useEffect(() => {
-    loadSavedRecipes();
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) {
+        router.replace("/login");
+        return;
+      }
+      setUserEmail(data.session.user.email ?? null);
+      loadSavedRecipes();
+    });
   }, []);
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
 
   const hasRecipes = recipes !== null;
   const hasContent = hasRecipes || showSaved;
@@ -156,9 +172,23 @@ export default function Home() {
         >
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-              🍳 Fridge Chef
-            </h1>
+            <div className="flex items-start justify-between gap-2">
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+                🍳 Fridge Chef
+              </h1>
+              {userEmail && (
+                <div className="text-right">
+                  <p className="text-xs text-zinc-400 dark:text-zinc-500 truncate max-w-35">{userEmail}</p>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                  >
+                    Atsijungti
+                  </button>
+                </div>
+              )}
+            </div>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
               Įveskite turimus ingredientus ir gaukite receptų pasiūlymus
             </p>
