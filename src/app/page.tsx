@@ -208,6 +208,20 @@ export default function Home() {
             )}
           </div>
 
+          {/* Sugeneruoti receptai mygtukas - rodomas kai yra sugeneruoti arba išsaugoti receptai */}
+          {(hasRecipes || showSaved) && (
+            <div className="mt-8">
+              <button
+                type="button"
+                onClick={() => setShowSaved(false)}
+                className="w-full rounded-lg px-6 py-3 text-sm font-medium bg-orange-500 text-white hover:bg-orange-600 active:bg-orange-700 transition-colors flex items-center justify-center gap-2"
+              >
+                <span>🍽️</span>
+                Sugeneruoti receptai
+              </button>
+            </div>
+          )}
+
           {/* Išsaugoti receptai mygtukas */}
           <div className="mt-8">
             <button
