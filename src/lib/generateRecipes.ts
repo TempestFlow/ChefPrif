@@ -21,7 +21,7 @@ Grąžink tik JSON objektą šia struktūra:
 }
 
 Taisyklės:
-- ingredients masyve naudok turimus ingredientus su kiekiais
+- ingredients masyve įtrauk VISUS receptui reikalingus ingredientus su kiekiais (ir turimus, ir trūkstamus)
 - missing_ingredients — ingredientai kurių NĖRA vartotojo sąraše, bet reikia receptui
 - estimated_calories — apytikslės kalorijos vienai porcijai
 - Viskas lietuvių kalba`;

@@ -17,7 +17,7 @@ import { generateRecipes } from "@/lib/generateRecipes";
 
 function makeMockCreate(returnValue: unknown) {
   const mockCreate = jest.fn().mockResolvedValueOnce(returnValue);
-  (OpenAI as jest.Mock).mockImplementation(() => ({
+  (OpenAI as unknown as jest.Mock).mockImplementation(() => ({
     chat: { completions: { create: mockCreate } },
   }));
   return mockCreate;
@@ -136,7 +136,7 @@ describe("AC-3: Atsakymas paverčiamas į Recipe objektą", () => {
 
 describe("AC-4: Klaidos atveju išmetama klaida su pranešimu", () => {
   it("meta klaidą tinklo klaidos atveju", async () => {
-    (OpenAI as jest.Mock).mockImplementation(() => ({
+    (OpenAI as unknown as jest.Mock).mockImplementation(() => ({
       chat: {
         completions: {
           create: jest.fn().mockRejectedValueOnce(new Error("Network error")),
@@ -148,7 +148,7 @@ describe("AC-4: Klaidos atveju išmetama klaida su pranešimu", () => {
   });
 
   it("meta klaidą timeout atveju", async () => {
-    (OpenAI as jest.Mock).mockImplementation(() => ({
+    (OpenAI as unknown as jest.Mock).mockImplementation(() => ({
       chat: {
         completions: {
           create: jest.fn().mockRejectedValueOnce(new Error("Request timeout")),
