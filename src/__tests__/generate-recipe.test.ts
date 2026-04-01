@@ -75,13 +75,13 @@ describe("AC-2: Sistema formuoja OpenAI užklausą su json_object formatu", () =
       choices: [{ message: { content: JSON.stringify({ recipes: [sampleRecipe] }) } }],
     });
 
-    await generateRecipes(["Pomidoras", "Česnakas"]);
+    await generateRecipes(["Pomidoras - 500 g", "Česnakas - 2 vnt."]);
 
     const userMessage = mockCreate.mock.calls[0][0].messages.find(
       (m: { role: string }) => m.role === "user"
     );
-    expect(userMessage.content).toContain("Pomidoras");
-    expect(userMessage.content).toContain("Česnakas");
+    expect(userMessage.content).toContain("Pomidoras - 500 g");
+    expect(userMessage.content).toContain("Česnakas - 2 vnt.");
   });
 
   it("naudoja system prompt su JSON struktūros aprašymu", async () => {

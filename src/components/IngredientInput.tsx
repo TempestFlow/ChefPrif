@@ -17,6 +17,8 @@ export default function IngredientInput({
   const [selectedIngredient, setSelectedIngredient] = useState<string | null>(
     null
   );
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("g");
   const [showDropdown, setShowDropdown] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
@@ -26,8 +28,9 @@ export default function IngredientInput({
   // AC-1: Pradėjus vesti tekstą (bent 2 raidės), rodomas dropdown
   useEffect(() => {
     if (query.length >= 2) {
+      const addedNames = addedIngredients.map((i) => i.split(" - ")[0]);
       const filtered = filterIngredients(query).filter(
-        (ing) => !addedIngredients.includes(ing)
+        (ing) => !addedNames.includes(ing)
       );
       setSuggestions(filtered);
       setShowDropdown(true);
@@ -64,14 +67,32 @@ export default function IngredientInput({
 
   // AC-2: Pridėti mygtukas aktyvus tik kai pasirinktas ingredientas iš sąrašo
   function handleAdd() {
-    if (selectedIngredient && !addedIngredients.includes(selectedIngredient)) {
-      onAdd(selectedIngredient);
-      // AC-4: Po pridėjimo laukelis išvalomas
-      setQuery("");
-      setSelectedIngredient(null);
-      setSuggestions([]);
-      inputRef.current?.focus();
+    if (!selectedIngredient) {
+      return;
     }
+
+    const alreadyAdded = addedIngredients.some(
+      (ing) => ing.split(" - ")[0] === selectedIngredient
+    );
+
+    if (alreadyAdded) {
+      return;
+    }
+
+    const quantityText = quantity.trim()
+      ? `${quantity.trim()} ${unit}`
+      : "pasirinktinis kiekis";
+    const ingredientWithQuantity = `${selectedIngredient} - ${quantityText}`;
+
+    onAdd(ingredientWithQuantity);
+
+    // AC-4: Po pridėjimo laukelis išvalomas
+    setQuery("");
+    setSelectedIngredient(null);
+    setQuantity("");
+    setUnit("g");
+    setSuggestions([]);
+    inputRef.current?.focus();
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -184,13 +205,56 @@ export default function IngredientInput({
               </ul>
             )}
           </div>
+        </div>
 
-          {/* AC-2: Pridėti mygtukas */}
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <div>
+            <label
+              htmlFor="ingredient-quantity"
+              className="mb-1 block text-xs font-medium text-zinc-600 dark:text-zinc-300"
+            >
+              Kiekis
+            </label>
+            <input
+              id="ingredient-quantity"
+              type="number"
+              min="0"
+              step="any"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              placeholder="pvz.: 500"
+              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="ingredient-unit"
+              className="mb-1 block text-xs font-medium text-zinc-600 dark:text-zinc-300"
+            >
+              Vienetai
+            </label>
+            <select
+              id="ingredient-unit"
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+            >
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="ml">ml</option>
+              <option value="l">l</option>
+              <option value="vnt.">vnt.</option>
+              <option value="šaukštas">šaukštas</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="mt-3">
           <button
             type="button"
             onClick={handleAdd}
             disabled={isAddDisabled}
-            className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-colors ${
+            className={`w-full rounded-lg px-5 py-2.5 text-sm font-medium transition-colors ${
               isAddDisabled
                 ? "cursor-not-allowed bg-zinc-200 text-zinc-400 dark:bg-zinc-700 dark:text-zinc-500"
                 : "bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
