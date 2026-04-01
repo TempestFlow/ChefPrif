@@ -1,14 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Recipe } from "@/types/recipe";
 
 interface RecipeCardProps {
   recipe: Recipe;
+  isSaved: boolean;
+  onToggleSave: () => void;
 }
 
-export default function RecipeCard({ recipe }: RecipeCardProps) {
+export default function RecipeCard({ recipe, isSaved, onToggleSave }: RecipeCardProps) {
   const [toast, setToast] = useState<string | null>(null);
+  const [prevIsSaved, setPrevIsSaved] = useState(isSaved);
+
+  useEffect(() => {
+    if (isSaved !== prevIsSaved) {
+      setToast(isSaved ? "Receptas išsaugotas!" : "Receptas pašalintas iš išsaugotų!");
+      setTimeout(() => setToast(null), 2500);
+      setPrevIsSaved(isSaved);
+    }
+  }, [isSaved, prevIsSaved]);
 
   async function handleCopyShoppingList() {
     if (recipe.missing_ingredients.length === 0) {
@@ -38,9 +49,24 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
             {recipe.title}
           </h3>
-          <span className="shrink-0 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-            {recipe.servings} porcij{recipe.servings === 1 ? "a" : "os"}
-          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onToggleSave}
+              title={isSaved ? "Pašalinti iš išsaugotų" : "Išsaugoti receptą"}
+              className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors ${
+                isSaved
+                  ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+                  : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+              }`}
+              data-testid="save-recipe"
+            >
+              <span className="text-2xl">{isSaved ? "❤️" : "🤍"}</span>
+            </button>
+            <span className="shrink-0 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+              {recipe.servings} porcij{recipe.servings === 1 ? "a" : "os"}
+            </span>
+          </div>
         </div>
 
         {/* Kalorijos */}
