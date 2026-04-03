@@ -5,7 +5,7 @@ Receptų generatorius pagal turimus ingredientus — AI pagalba mažinant maisto
 
 Grupė:SefPrif
 
-Evald German - TempestFlow
-Augustas Ilgis - Buskud0
-Naglis Butkevičius - naglisbutkevicius
-Romuald Chatkevič - SillyRomuald
+Evald German - TempestFlow |
+Augustas Ilgis - Buskud0 |
+Naglis Butkevičius - naglisbutkevicius |
+Romuald Chatkevič - SillyRomuald |
