@@ -65,13 +65,33 @@ describe("RegisterPage", () => {
       );
       expect(mockSignUp).not.toHaveBeenCalled();
     });
+
+    it("rodo klaidą kai slaptažodis neturi specialaus simbolio", async () => {
+      render(<RegisterPage />);
+      fillForm("test@test.lt", "Slaptazodis1", "Slaptazodis1");
+      fireEvent.submit(screen.getByRole("button", { name: /registruotis/i }).closest("form")!);
+
+      await waitFor(() =>
+        expect(screen.getByRole("alert")).toHaveTextContent("specialų simbolį")
+      );
+      expect(mockSignUp).not.toHaveBeenCalled();
+    });
+
+    it("leidžia registruotis kai slaptažodis turi specialų simbolį", async () => {
+      mockSignUp.mockResolvedValueOnce({ error: null });
+      render(<RegisterPage />);
+      fillForm("test@test.lt", "Slaptazodis1!", "Slaptazodis1!");
+      fireEvent.submit(screen.getByRole("button", { name: /registruotis/i }).closest("form")!);
+
+      await waitFor(() => expect(mockSignUp).toHaveBeenCalled());
+    });
   });
 
   describe("Sėkminga registracija", () => {
     it("rodo el. pašto patvirtinimo pranešimą po sėkmingos registracijos", async () => {
       mockSignUp.mockResolvedValueOnce({ error: null });
       render(<RegisterPage />);
-      fillForm("test@test.lt", "slaptazodis", "slaptazodis");
+      fillForm("test@test.lt", "Slaptazodis1!", "Slaptazodis1!");
       fireEvent.submit(screen.getByRole("button", { name: /registruotis/i }).closest("form")!);
 
       await waitFor(() =>
@@ -82,7 +102,7 @@ describe("RegisterPage", () => {
     it("parodo vartotojo el. paštą patvirtinimo pranešime", async () => {
       mockSignUp.mockResolvedValueOnce({ error: null });
       render(<RegisterPage />);
-      fillForm("mano@pastas.lt", "slaptazodis", "slaptazodis");
+      fillForm("mano@pastas.lt", "Slaptazodis1!", "Slaptazodis1!");
       fireEvent.submit(screen.getByRole("button", { name: /registruotis/i }).closest("form")!);
 
       await waitFor(() =>
@@ -93,7 +113,7 @@ describe("RegisterPage", () => {
     it("rodo 'Kuriama paskyra...' kol vyksta užklausa", async () => {
       mockSignUp.mockImplementation(() => new Promise(() => {}));
       render(<RegisterPage />);
-      fillForm("test@test.lt", "slaptazodis", "slaptazodis");
+      fillForm("test@test.lt", "Slaptazodis1!", "Slaptazodis1!");
       fireEvent.submit(screen.getByRole("button", { name: /registruotis/i }).closest("form")!);
 
       await waitFor(() =>
@@ -106,7 +126,7 @@ describe("RegisterPage", () => {
     it("rodo klaidą kai el. paštas jau užregistruotas", async () => {
       mockSignUp.mockResolvedValueOnce({ error: { message: "User already registered" } });
       render(<RegisterPage />);
-      fillForm("egzistuoja@test.lt", "slaptazodis", "slaptazodis");
+      fillForm("egzistuoja@test.lt", "Slaptazodis1!", "Slaptazodis1!");
       fireEvent.submit(screen.getByRole("button", { name: /registruotis/i }).closest("form")!);
 
       await waitFor(() =>
@@ -117,7 +137,7 @@ describe("RegisterPage", () => {
     it("rodo klaidą per daug bandymų", async () => {
       mockSignUp.mockResolvedValueOnce({ error: { message: "Too many requests" } });
       render(<RegisterPage />);
-      fillForm("test@test.lt", "slaptazodis", "slaptazodis");
+      fillForm("test@test.lt", "Slaptazodis1!", "Slaptazodis1!");
       fireEvent.submit(screen.getByRole("button", { name: /registruotis/i }).closest("form")!);
 
       await waitFor(() =>
@@ -128,7 +148,7 @@ describe("RegisterPage", () => {
     it("rodo bendrą klaidą nežinomai klaidai", async () => {
       mockSignUp.mockResolvedValueOnce({ error: { message: "Unknown server error" } });
       render(<RegisterPage />);
-      fillForm("test@test.lt", "slaptazodis", "slaptazodis");
+      fillForm("test@test.lt", "Slaptazodis1!", "Slaptazodis1!");
       fireEvent.submit(screen.getByRole("button", { name: /registruotis/i }).closest("form")!);
 
       await waitFor(() =>
