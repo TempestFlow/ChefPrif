@@ -6,10 +6,17 @@ import Link from "next/link";
 
 function translateAuthError(message: string): string {
   if (message.includes("User already registered")) return "Šis el. paštas jau užregistruotas.";
+  if (message.includes("already registered")) return "Šis el. paštas jau užregistruotas.";
   if (message.includes("Password should be at least")) return "Slaptažodis turi būti bent 6 simbolių.";
   if (message.includes("Unable to validate email")) return "Neteisingas el. pašto formatas.";
+  if (message.includes("invalid email")) return "Neteisingas el. pašto formatas.";
   if (message.includes("Too many requests")) return "Per daug bandymų. Palaukite ir bandykite vėliau.";
-  return "Registracijos klaida. Bandykite dar kartą.";
+  if (message.includes("rate limit")) return "Per daug bandymų. Palaukite ir bandykite vėliau.";
+  if (message.includes("Email rate limit")) return "Viršyta el. pašto siuntimo riba. Bandykite vėliau.";
+  if (message.includes("Signups not allowed")) return "Registracija šiuo metu išjungta.";
+  if (message.includes("not allowed")) return "Registracija šiuo metu išjungta.";
+  if (message.includes("weak password") || message.includes("Password")) return "Slaptažodis per silpnas.";
+  return `Registracijos klaida: ${message}`;
 }
 
 export default function RegisterPage() {

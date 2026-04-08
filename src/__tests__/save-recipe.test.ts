@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 // Testai Task 3.2 (Logic): save recipe API route
 import { NextRequest } from "next/server";
 import { POST } from "@/app/api/recipes/save/route";
@@ -58,27 +61,18 @@ describe("POST /api/recipes/save", () => {
   });
 
   it("patikrina dublikatus prieš įrašant", async () => {
-    // Mock - receptas nerastas (gerai)
-    const mockSingle = jest.fn().mockResolvedValue({
-      data: null,
-      error: { code: "PGRST116" }, // Not found
-    });
+    const mockSingle = jest.fn().mockResolvedValue({ data: null, error: { code: "PGRST116" } });
+    const mockEq2 = jest.fn().mockReturnValue({ single: mockSingle });
+    const mockEq1 = jest.fn().mockReturnValue({ eq: mockEq2 });
+    const mockCheckSelect = jest.fn().mockReturnValue({ eq: mockEq1 });
 
-    const mockEq = jest.fn().mockReturnValue({ single: mockSingle });
-    const mockSelect = jest.fn().mockReturnValue({ eq: mockEq });
-    mockSupabase.from.mockReturnValue({ select: mockSelect } as any);
-
-    // Mock - sėkmingas įrašymas
-    const mockInsertSingle = jest.fn().mockResolvedValue({
-      data: { id: 1, title: sampleRecipe.title },
-      error: null,
-    });
-
+    const mockInsertSingle = jest.fn().mockResolvedValue({ data: { id: 1, title: sampleRecipe.title }, error: null });
     const mockInsertSelect = jest.fn().mockReturnValue({ single: mockInsertSingle });
     const mockInsert = jest.fn().mockReturnValue({ select: mockInsertSelect });
 
-    // Second call for insert
-    mockSupabase.from.mockReturnValueOnce({ insert: mockInsert } as any);
+    mockSupabase.from
+      .mockReturnValueOnce({ select: mockCheckSelect } as any)
+      .mockReturnValueOnce({ insert: mockInsert } as any);
 
     const request = new NextRequest("http://localhost:3000/api/recipes/save", {
       method: "POST",
@@ -94,14 +88,10 @@ describe("POST /api/recipes/save", () => {
   });
 
   it("grąžina 409 klaidą kai receptas jau išsaugotas", async () => {
-    // Mock - receptas rastas (dublikatas)
-    const mockSingle = jest.fn().mockResolvedValue({
-      data: { id: 1 },
-      error: null,
-    });
-
-    const mockEq = jest.fn().mockReturnValue({ single: mockSingle });
-    const mockSelect = jest.fn().mockReturnValue({ eq: mockEq });
+    const mockSingle = jest.fn().mockResolvedValue({ data: { id: 1 }, error: null });
+    const mockEq2 = jest.fn().mockReturnValue({ single: mockSingle });
+    const mockEq1 = jest.fn().mockReturnValue({ eq: mockEq2 });
+    const mockSelect = jest.fn().mockReturnValue({ eq: mockEq1 });
     mockSupabase.from.mockReturnValue({ select: mockSelect } as any);
 
     const request = new NextRequest("http://localhost:3000/api/recipes/save", {
@@ -117,14 +107,10 @@ describe("POST /api/recipes/save", () => {
   });
 
   it("sėkmingai įrašo receptą į duomenų bazę", async () => {
-    // Mock - receptas nerastas
-    const mockCheckSingle = jest.fn().mockResolvedValue({
-      data: null,
-      error: { code: "PGRST116" },
-    });
-
-    const mockCheckEq = jest.fn().mockReturnValue({ single: mockCheckSingle });
-    const mockCheckSelect = jest.fn().mockReturnValue({ eq: mockCheckEq });
+    const mockCheckSingle = jest.fn().mockResolvedValue({ data: null, error: { code: "PGRST116" } });
+    const mockCheckEq2 = jest.fn().mockReturnValue({ single: mockCheckSingle });
+    const mockCheckEq1 = jest.fn().mockReturnValue({ eq: mockCheckEq2 });
+    const mockCheckSelect = jest.fn().mockReturnValue({ eq: mockCheckEq1 });
 
     // Mock - sėkmingas įrašymas
     const mockInsertSingle = jest.fn().mockResolvedValue({
@@ -169,14 +155,10 @@ describe("POST /api/recipes/save", () => {
   });
 
   it("grąžina 500 klaidą kai nepavyksta įrašyti į DB", async () => {
-    // Mock - receptas nerastas
-    const mockCheckSingle = jest.fn().mockResolvedValue({
-      data: null,
-      error: { code: "PGRST116" },
-    });
-
-    const mockCheckEq = jest.fn().mockReturnValue({ single: mockCheckSingle });
-    const mockCheckSelect = jest.fn().mockReturnValue({ eq: mockCheckEq });
+    const mockCheckSingle = jest.fn().mockResolvedValue({ data: null, error: { code: "PGRST116" } });
+    const mockCheckEq2 = jest.fn().mockReturnValue({ single: mockCheckSingle });
+    const mockCheckEq1 = jest.fn().mockReturnValue({ eq: mockCheckEq2 });
+    const mockCheckSelect = jest.fn().mockReturnValue({ eq: mockCheckEq1 });
 
     // Mock - įrašymo klaida
     const mockInsertSingle = jest.fn().mockResolvedValue({

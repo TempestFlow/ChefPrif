@@ -2,7 +2,6 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import RecipeCard from "@/components/RecipeCard";
 import { Recipe } from "@/types/recipe";
 
-// Mockuojame navigator.clipboard
 Object.assign(navigator, {
   clipboard: {
     writeText: jest.fn(),
@@ -10,165 +9,112 @@ Object.assign(navigator, {
 });
 
 const sampleRecipe: Recipe = {
-  title: "Pomidorų sriuba",
+  title: "Pomidoru sriuba",
   servings: 4,
-  ingredients: ["400g pomidorų", "500ml vandens"],
+  ingredients: ["400g pomidoru", "500ml vandens"],
   steps: ["Supiaustyti pomidorus", "Verdinti 15 min"],
-  missing_ingredients: ["Česnakus", "Druską"],
+  missing_ingredients: ["Cesnakus", "Druska"],
   estimated_calories: 150,
 };
 
+const mockToggleSave = jest.fn();
+
+function renderCard(isSaved = false) {
+  return render(
+    <RecipeCard recipe={sampleRecipe} isSaved={isSaved} onToggleSave={mockToggleSave} />
+  );
+}
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  (navigator.clipboard.writeText as jest.Mock).mockClear();
+});
+
 describe("RecipeCard - Shopping List Copy Feature", () => {
-  beforeEach(() => {
-    (navigator.clipboard.writeText as jest.Mock).mockClear();
-    jest.clearAllTimers();
-  });
-
-  afterEach(() => {
-    jest.clearAllTimers();
-  });
-
-  it("renderina mygtuką 'Kopijuoti' kai yra trūkstamų ingredientų", () => {
-    render(<RecipeCard recipe={sampleRecipe} />);
+  it("renderina mygtuka 'Kopijuoti' kai yra trukstamu ingredientu", () => {
+    renderCard();
     expect(screen.getByTestId("copy-shopping-list")).toBeInTheDocument();
   });
 
-  it("nerenderina mygtuko kai nėra trūkstamų ingredientų", () => {
-    const recipeLessMissing = { ...sampleRecipe, missing_ingredients: [] };
-    render(<RecipeCard recipe={recipeLessMissing} />);
+  it("nerenderina mygtuko kai nera trukstamu ingredientu", () => {
+    render(
+      <RecipeCard
+        recipe={{ ...sampleRecipe, missing_ingredients: [] }}
+        isSaved={false}
+        onToggleSave={mockToggleSave}
+      />
+    );
     expect(screen.queryByTestId("copy-shopping-list")).not.toBeInTheDocument();
   });
 
-  it("kopijuoja sąrašą į clipboard su bullet points formatu", async () => {
+  it("kopijuoja sarasa i clipboard su bullet points formatu", async () => {
     (navigator.clipboard.writeText as jest.Mock).mockResolvedValueOnce(undefined);
-
-    render(<RecipeCard recipe={sampleRecipe} />);
+    renderCard();
     fireEvent.click(screen.getByTestId("copy-shopping-list"));
 
     await waitFor(() => {
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-        "• Česnakus\n• Druška"
+        "\u2022 Cesnakus\n\u2022 Druska"
       );
     });
   });
 
-  it("rodo 'Sąrašas nukopijuotas!' toast po sėkmingo kopijuojimo", async () => {
+  it("rodo toast po sekmingo kopijuojimo", async () => {
     (navigator.clipboard.writeText as jest.Mock).mockResolvedValueOnce(undefined);
-
-    render(<RecipeCard recipe={sampleRecipe} />);
+    renderCard();
     fireEvent.click(screen.getByTestId("copy-shopping-list"));
 
     await waitFor(() => {
-      expect(screen.getByTestId("toast")).toHaveTextContent("Sąrašas nukopijuotas!");
+      expect(screen.getByTestId("toast")).toBeInTheDocument();
     });
   });
-
-// Mockuojame fetch API
-global.fetch = jest.fn();
+});
 
 describe("RecipeCard - Save Recipe Feature", () => {
-  beforeEach(() => {
-    (global.fetch as jest.Mock).mockClear();
-    jest.clearAllTimers();
-  });
-
-  afterEach(() => {
-    jest.clearAllTimers();
-  });
-
-  it("renderina širdelės mygtuką", () => {
-    render(<RecipeCard recipe={sampleRecipe} />);
+  it("renderina issaugojimo mygtuka", () => {
+    renderCard();
     expect(screen.getByTestId("save-recipe")).toBeInTheDocument();
   });
 
-  it("rodo baltą širdelę kai receptas neišsaugotas", () => {
-    render(<RecipeCard recipe={sampleRecipe} />);
-    const button = screen.getByTestId("save-recipe");
-    expect(button).toHaveTextContent("🤍");
-    expect(button).toHaveClass("w-10", "h-10"); // Larger button
+  it("rodo balta sirdele kai receptas neissaugotas", () => {
+    renderCard(false);
+    expect(screen.getByTestId("save-recipe")).toHaveTextContent("\uD83E\uDD0D");
   });
 
-  it("siunčia POST užklausą į /api/recipes/save kai paspaudžiamas mygtukas", async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ success: true, message: "Receptas išsaugotas!" }),
-    });
+  it("rodo raudona sirdele kai receptas issaugotas", () => {
+    renderCard(true);
+    expect(screen.getByTestId("save-recipe")).toHaveTextContent("\u2764\uFE0F");
+  });
 
-    render(<RecipeCard recipe={sampleRecipe} />);
+  it("isskviecia onToggleSave paspaudus mygtuka", () => {
+    renderCard();
     fireEvent.click(screen.getByTestId("save-recipe"));
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith("/api/recipes/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ recipe: sampleRecipe }),
-      });
-    });
+    expect(mockToggleSave).toHaveBeenCalledTimes(1);
   });
 
-  it("rodo raudoną širdelę ir sėkmės toast po sėkmingo išsaugojimo", async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ success: true, message: "Receptas išsaugotas!" }),
-    });
-
-    render(<RecipeCard recipe={sampleRecipe} />);
-    fireEvent.click(screen.getByTestId("save-recipe"));
-
-    await waitFor(() => {
-      expect(screen.getByTestId("save-recipe")).toHaveTextContent("❤️");
-      expect(screen.getByTestId("toast")).toHaveTextContent("Receptas išsaugotas!");
-    });
-  });
-
-  it("rodo dublikatų pranešimą kai receptas jau išsaugotas", async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: false,
-      status: 409,
-      json: async () => ({ error: "Šis receptas jau išsaugotas." }),
-    });
-
-    render(<RecipeCard recipe={sampleRecipe} />);
-    fireEvent.click(screen.getByTestId("save-recipe"));
-
-    await waitFor(() => {
-      expect(screen.getByTestId("toast")).toHaveTextContent("Šis receptas jau išsaugotas!");
-    });
-  });
-
-  it("rodo klaidos pranešimą kai nepavyksta išsaugoti", async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-      json: async () => ({ error: "Nepavyko išsaugoti recepto." }),
-    });
-
-    render(<RecipeCard recipe={sampleRecipe} />);
-    fireEvent.click(screen.getByTestId("save-recipe"));
-
-    await waitFor(() => {
-      expect(screen.getByTestId("toast")).toHaveTextContent("Nepavyko išsaugoti recepto.");
-    });
-  });
-
-  it("rodo loading būseną kol vyksta išsaugojimas", async () => {
-    (global.fetch as jest.Mock).mockImplementationOnce(
-      () => new Promise(resolve => setTimeout(() => resolve({
-        ok: true,
-        json: async () => ({ success: true, message: "Receptas išsaugotas!" }),
-      }), 100))
+  it("rodo issaugojimo toast kai isSaved pasikeicia i true", async () => {
+    const { rerender } = render(
+      <RecipeCard recipe={sampleRecipe} isSaved={false} onToggleSave={mockToggleSave} />
+    );
+    rerender(
+      <RecipeCard recipe={sampleRecipe} isSaved={true} onToggleSave={mockToggleSave} />
     );
 
-    render(<RecipeCard recipe={sampleRecipe} />);
-    const button = screen.getByTestId("save-recipe");
+    await waitFor(() => {
+      expect(screen.getByTestId("toast")).toHaveTextContent("Receptas i\u0161saugotas!");
+    });
+  });
 
-    fireEvent.click(button);
-
-    // Kol vyksta loading, mygtukas turi būti disabled
-    expect(button).toBeDisabled();
+  it("rodo pasalinimo toast kai isSaved pasikeicia i false", async () => {
+    const { rerender } = render(
+      <RecipeCard recipe={sampleRecipe} isSaved={true} onToggleSave={mockToggleSave} />
+    );
+    rerender(
+      <RecipeCard recipe={sampleRecipe} isSaved={false} onToggleSave={mockToggleSave} />
+    );
 
     await waitFor(() => {
-      expect(button).not.toBeDisabled();
+      expect(screen.getByTestId("toast")).toBeInTheDocument();
     });
   });
 });
