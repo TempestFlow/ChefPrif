@@ -104,7 +104,7 @@ describe("REQ-1: Vieno ingrediento pridėjimas su validacija", () => {
       fireEvent.change(input, { target: { value: "Pomid" } });
       fireEvent.mouseDown(screen.getByText("Pomidoras"));
       fireEvent.click(screen.getByRole("button", { name: /pridėti/i }));
-      expect(screen.queryByRole("listbox")).toBeInTheDocument();
+      expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
     });
   });
 });
