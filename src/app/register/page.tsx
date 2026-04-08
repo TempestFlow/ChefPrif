@@ -41,6 +41,21 @@ export default function RegisterPage() {
       return;
     }
 
+    if (password.length > 30) {
+      setError("Slaptažodis negali būti ilgesnis nei 30 simbolių.");
+      return;
+    }
+
+    if (password.toLowerCase() == password) {
+      setError("Slaptažodis turi turėti bent 1 didžiąją raidę.");
+      return;
+    }
+
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+      setError("Slaptažodis turi turėti bent vieną specialų simbolį (pvz. !@#$%).");
+      return;
+    }
+
     setIsLoading(true);
 
     const { error } = await supabase.auth.signUp({ email, password });
