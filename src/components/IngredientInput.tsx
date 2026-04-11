@@ -295,12 +295,7 @@ export default function IngredientInput({
           </button>
         </div>
 
-        {/* AC-3: Klaidos pranešimas */}
-        {noMatchFound && (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">
-            Tokio ingrediento neradome. Prašome pasirinkti iš sąrašo.
-          </p>
-        )}
+        {/* AC-3: Jei nerasta, tiesiog nerodomas dropdown - error nerotas */}
       </div>
     </div>
   );
