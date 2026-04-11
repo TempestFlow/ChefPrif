@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^chcp 65001 && npm test -- -t \"leidžia pridėti ingredientą su kiekiu ir vienetu, tada ieškoti receptų\" --no-coverage$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
