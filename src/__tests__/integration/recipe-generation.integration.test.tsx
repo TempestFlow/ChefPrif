@@ -61,7 +61,7 @@ function TestWrapper() {
         Ieškoti receptų
       </button>
       {recipes && recipes.map((recipe, index) => (
-        <RecipeCard key={index} recipe={recipe} />
+        <RecipeCard key={index} recipe={recipe} isSaved={false} onToggleSave={() => {}} />
       ))}
     </div>
   );
