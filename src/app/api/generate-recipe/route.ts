@@ -5,9 +5,12 @@ import { generateRecipes } from "@/lib/generateRecipes";
 export async function POST(request: NextRequest) {
   let ingredients: string[];
 
+  let excludeTitles: string[] = [];
+
   try {
     const body = await request.json();
     ingredients = body.ingredients;
+    excludeTitles = Array.isArray(body.excludeTitles) ? body.excludeTitles : [];
   } catch {
     return NextResponse.json(
       { error: "Neteisingas užklausos formatas." },
@@ -24,7 +27,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const recipes = await generateRecipes(ingredients);
+    const recipes = await generateRecipes(ingredients, excludeTitles);
     return NextResponse.json({ recipes });
   } catch (error) {
     // AC-4: Klaida registruojama žurnale

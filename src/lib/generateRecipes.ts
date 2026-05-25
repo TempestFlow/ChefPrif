@@ -1,5 +1,3 @@
-// Task 2.2 (Logic): Verslo logika — ingredientai → OpenAI → receptai
-// Atskiras failas leidžia testuoti be Next.js Web API priklausomybių
 import OpenAI from "openai";
 import { Recipe } from "@/types/recipe";
 
@@ -24,17 +22,24 @@ Taisyklės:
 - ingredients masyve įtrauk VISUS receptui reikalingus ingredientus su kiekiais (ir turimus, ir trūkstamus)
 - missing_ingredients — ingredientai kurių NĖRA vartotojo sąraše, bet reikia receptui
 - estimated_calories — apytikslės kalorijos vienai porcijai
-- Viskas lietuvių kalba`;
+- Viskas lietuvių kalba
+- Jei pateiktas sąrašas "Jau sugeneruoti receptai", NEGENERUOK receptų su tais pavadinimais — sugeneruok visiškai skirtingus receptus to pačio JSON formato`;
 
-// AC-2: OpenAI užklausa su json_object formatu
-// AC-3: Atsakymas paverčiamas į Recipe[] masyvą
-export async function generateRecipes(ingredients: string[]): Promise<Recipe[]> {
+export async function generateRecipes(
+  ingredients: string[],
+  excludeTitles: string[] = []
+): Promise<Recipe[]> {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
-    timeout: 30000, // Timeout padidintas — OpenAI gali atsakyti lėčiau
+    timeout: 30000,
   });
 
-  const userMessage = `Mano ingredientai: ${ingredients.join(", ")}`;
+  const excludePart =
+    excludeTitles.length > 0
+      ? `\nJau sugeneruoti receptai (NEKARTOK šių): ${excludeTitles.join(", ")}`
+      : "";
+
+  const userMessage = `Mano ingredientai: ${ingredients.join(", ")}${excludePart}`;
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",

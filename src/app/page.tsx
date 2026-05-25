@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import IngredientInput from "@/components/IngredientInput";
 import IngredientList from "@/components/IngredientList";
@@ -21,6 +21,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
   const [showSaved, setShowSaved] = useState(false);
+  const lastRequestRef = useRef<number>(0);
+  const RATE_LIMIT_MS = 10000;
 
   function handleAddIngredient(ingredient: string) {
     setIngredients((prev) => [...prev, ingredient]);
@@ -45,14 +47,26 @@ export default function Home() {
 
   // Task 2.3 (GUI): "Ieškoti receptų" mygtuko logika
   async function handleGenerateRecipes() {
+    const now = Date.now();
+    const elapsed = now - lastRequestRef.current;
+
+    if (elapsed < RATE_LIMIT_MS && lastRequestRef.current !== 0) {
+      const remaining = Math.ceil((RATE_LIMIT_MS - elapsed) / 1000);
+      setError(`Per dažnai spaudžiate mygtuką. Palaukite dar ${remaining} sek.`);
+      return;
+    }
+
+    lastRequestRef.current = now;
     setIsLoading(true);
     setError(null);
+
+    const excludeTitles = recipes ? recipes.map((r) => r.title) : [];
 
     try {
       const response = await fetch("/api/generate-recipe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ingredients }),
+        body: JSON.stringify({ ingredients, excludeTitles }),
       });
 
       const data = await response.json();
@@ -61,10 +75,16 @@ export default function Home() {
         throw new Error(data.error ?? "Nepavyko sugeneruoti receptų.");
       }
 
-      setRecipes(data.recipes);
-      setShowSaved(false); // Switch back to generated recipes
+      const newRecipes: Recipe[] = data.recipes;
+
+      if (!newRecipes || newRecipes.length === 0) {
+        setError("Naujų receptų nerasta. Pabandykite pakeisti ingredientus.");
+        return;
+      }
+
+      setRecipes(newRecipes);
+      setShowSaved(false);
     } catch (err) {
-      // AC-4: Klaida parodoma vartotojui
       const message =
         err instanceof Error ? err.message : "Nepavyko sugeneruoti receptų.";
       setError(message);
