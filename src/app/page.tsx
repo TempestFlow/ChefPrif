@@ -8,10 +8,12 @@ import IngredientList from "@/components/IngredientList";
 import RecipeCard from "@/components/RecipeCard";
 import { Recipe } from "@/types/recipe";
 import { EMPTY_PREFERENCES, UserPreferences } from "@/types/preferences";
+import { MAX_HISTORY_PER_USER, RecipeHistoryEntry } from "@/types/recipeHistory";
 import { supabase } from "@/lib/supabase";
 
 const isDemo = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://demo.supabase.co';
 const PREFERENCES_STORAGE_KEY = "userPreferences";
+const HISTORY_STORAGE_KEY = "recipeHistory";
 
 export default function Home() {
   const router = useRouter();
@@ -67,9 +69,17 @@ export default function Home() {
     const excludeTitles = recipes ? recipes.map((r) => r.title) : [];
 
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (accessToken) {
+        headers.Authorization = `Bearer ${accessToken}`;
+      }
+
       const response = await fetch("/api/generate-recipe", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ ingredients, excludeTitles, preferences }),
       });
 
@@ -88,6 +98,25 @@ export default function Home() {
 
       setRecipes(newRecipes);
       setShowSaved(false);
+
+      // REQ-7: Demo režime istorija saugoma vietinėje saugykloje (max 10 naujausių).
+      if (isDemo) {
+        try {
+          const raw = localStorage.getItem(HISTORY_STORAGE_KEY);
+          const existing: RecipeHistoryEntry[] = raw ? JSON.parse(raw) : [];
+          const now = new Date().toISOString();
+          const newEntries: RecipeHistoryEntry[] = newRecipes.map((recipe) => ({
+            id: `${Date.now()}-${recipe.title}`,
+            title: recipe.title,
+            recipe,
+            createdAt: now,
+          }));
+          const combined = [...newEntries, ...existing].slice(0, MAX_HISTORY_PER_USER);
+          localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(combined));
+        } catch {
+          // ignoruoti — istorija yra papildoma funkcija
+        }
+      }
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Nepavyko sugeneruoti receptų.";
@@ -230,6 +259,13 @@ export default function Home() {
                 <div className="text-right">
                   <p className="text-xs text-zinc-400 dark:text-zinc-500 truncate max-w-35">{userEmail}</p>
                   <div className="flex items-center justify-end gap-2">
+                    <Link
+                      href="/history"
+                      className="text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
+                    >
+                      Istorija
+                    </Link>
+                    <span className="text-xs text-zinc-300 dark:text-zinc-600">•</span>
                     <Link
                       href="/settings"
                       className="text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
