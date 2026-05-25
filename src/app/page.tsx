@@ -1,14 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import IngredientInput from "@/components/IngredientInput";
 import IngredientList from "@/components/IngredientList";
 import RecipeCard from "@/components/RecipeCard";
 import { Recipe } from "@/types/recipe";
+import { EMPTY_PREFERENCES, UserPreferences } from "@/types/preferences";
 import { supabase } from "@/lib/supabase";
 
 const isDemo = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://demo.supabase.co';
+const PREFERENCES_STORAGE_KEY = "userPreferences";
 
 export default function Home() {
   const router = useRouter();
@@ -21,6 +24,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
   const [showSaved, setShowSaved] = useState(false);
+  const [preferences, setPreferences] = useState<UserPreferences>(EMPTY_PREFERENCES);
   const lastRequestRef = useRef<number>(0);
   const RATE_LIMIT_MS = 10000;
 
@@ -66,7 +70,7 @@ export default function Home() {
       const response = await fetch("/api/generate-recipe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ingredients, excludeTitles }),
+        body: JSON.stringify({ ingredients, excludeTitles, preferences }),
       });
 
       const data = await response.json();
@@ -153,6 +157,31 @@ export default function Home() {
     }
   }
 
+  async function loadPreferences(accessToken: string) {
+    if (isDemo) {
+      try {
+        const raw = localStorage.getItem(PREFERENCES_STORAGE_KEY);
+        if (raw) setPreferences(JSON.parse(raw) as UserPreferences);
+      } catch {
+        // ignoruoti
+      }
+      return;
+    }
+    try {
+      const response = await fetch("/api/user/preferences", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!response.ok) return;
+      const data = await response.json();
+      setPreferences({
+        allergies: Array.isArray(data.allergies) ? data.allergies : [],
+        diets: Array.isArray(data.diets) ? data.diets : [],
+      });
+    } catch {
+      // ignoruoti — receptai vis tiek generuosis be filtrų
+    }
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) {
@@ -161,6 +190,7 @@ export default function Home() {
       }
       setUserEmail(data.session.user.email ?? null);
       loadSavedRecipes();
+      loadPreferences(data.session.access_token);
     });
   }, []);
 
@@ -199,13 +229,22 @@ export default function Home() {
               {userEmail && (
                 <div className="text-right">
                   <p className="text-xs text-zinc-400 dark:text-zinc-500 truncate max-w-35">{userEmail}</p>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-                  >
-                    Atsijungti
-                  </button>
+                  <div className="flex items-center justify-end gap-2">
+                    <Link
+                      href="/settings"
+                      className="text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
+                    >
+                      Nustatymai
+                    </Link>
+                    <span className="text-xs text-zinc-300 dark:text-zinc-600">•</span>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                    >
+                      Atsijungti
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

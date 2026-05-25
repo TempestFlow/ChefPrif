@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { Recipe } from "@/types/recipe";
+import { EMPTY_PREFERENCES, UserPreferences } from "@/types/preferences";
 
 const SYSTEM_PROMPT = `Tu esi kulinarijos asistentas. Vartotojas pateiks ingredientų sąrašą.
 Sugeneruok 3 receptus, kuriuos galima pagaminti iš tų ingredientų.
@@ -23,11 +24,14 @@ Taisyklės:
 - missing_ingredients — ingredientai kurių NĖRA vartotojo sąraše, bet reikia receptui
 - estimated_calories — apytikslės kalorijos vienai porcijai
 - Viskas lietuvių kalba
-- Jei pateiktas sąrašas "Jau sugeneruoti receptai", NEGENERUOK receptų su tais pavadinimais — sugeneruok visiškai skirtingus receptus to pačio JSON formato`;
+- Jei pateiktas sąrašas "Jau sugeneruoti receptai", NEGENERUOK receptų su tais pavadinimais — sugeneruok visiškai skirtingus receptus to pačio JSON formato
+- Jei nurodytos alergijos — NEĮTRAUK tų produktų ar jų darinių nei į "ingredients", nei į "missing_ingredients" masyvus
+- Jei nurodytos dietos — visi receptai privalo joms atitikti (pvz., "veganiška" = jokių gyvulinės kilmės produktų; "be glitimo" = jokių kvietinių/miltų gaminių)`;
 
 export async function generateRecipes(
   ingredients: string[],
-  excludeTitles: string[] = []
+  excludeTitles: string[] = [],
+  preferences: UserPreferences = EMPTY_PREFERENCES
 ): Promise<Recipe[]> {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -39,7 +43,17 @@ export async function generateRecipes(
       ? `\nJau sugeneruoti receptai (NEKARTOK šių): ${excludeTitles.join(", ")}`
       : "";
 
-  const userMessage = `Mano ingredientai: ${ingredients.join(", ")}${excludePart}`;
+  const allergiesPart =
+    preferences.allergies.length > 0
+      ? `\nAlergijos (DRAUDŽIAMA naudoti šių produktų): ${preferences.allergies.join(", ")}`
+      : "";
+
+  const dietsPart =
+    preferences.diets.length > 0
+      ? `\nDietos (receptai TURI ATITIKTI): ${preferences.diets.join(", ")}`
+      : "";
+
+  const userMessage = `Mano ingredientai: ${ingredients.join(", ")}${excludePart}${allergiesPart}${dietsPart}`;
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
