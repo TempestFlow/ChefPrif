@@ -1,7 +1,9 @@
 // Task 2.2 (Logic): API route — priima ingredientus, grąžina receptus
+// REQ-7: po sėkmingo generavimo automatiškai įrašo receptus į istoriją.
 import { NextRequest, NextResponse } from "next/server";
 import { generateRecipes } from "@/lib/generateRecipes";
 import { EMPTY_PREFERENCES, UserPreferences } from "@/types/preferences";
+import { resolveUserIdFromBearer, saveRecipesToHistory } from "@/lib/recipeHistory";
 
 export async function POST(request: NextRequest) {
   let ingredients: string[];
@@ -41,6 +43,18 @@ export async function POST(request: NextRequest) {
 
   try {
     const recipes = await generateRecipes(ingredients, excludeTitles, preferences);
+
+    // REQ-7: Įrašome į istoriją, jei vartotojas prisijungęs (turi Bearer tokeną).
+    // Klaida čia neturi nutraukti atsakymo — istorija yra papildoma funkcija.
+    try {
+      const userId = await resolveUserIdFromBearer(request.headers.get("authorization"));
+      if (userId) {
+        await saveRecipesToHistory(userId, recipes);
+      }
+    } catch (historyError) {
+      console.error("[generate-recipe] Istorijos įrašymo klaida:", historyError);
+    }
+
     return NextResponse.json({ recipes });
   } catch (error) {
     // AC-4: Klaida registruojama žurnale
