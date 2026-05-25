@@ -101,7 +101,7 @@ describe("Home Page Integration Tests", () => {
         expect(mockFetch).toHaveBeenCalledWith("/api/generate-recipe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ingredients: ["Sviestas - 200 g"], excludeTitles: [] }),
+          body: JSON.stringify({ ingredients: ["Sviestas - 200 g"], excludeTitles: [], preferences: { allergies: [], diets: [] } }),
         });
       });
       console.log("✅ Step 6 PASSED: API call verified");
@@ -298,6 +298,7 @@ describe("Home Page Integration Tests", () => {
           body: JSON.stringify({
             ingredients: ["Sviestas - 200 g", "Kiaušiniai - 3 vnt."],
             excludeTitles: [],
+            preferences: { allergies: [], diets: [] },
           }),
         });
       });
