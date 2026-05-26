@@ -8,5 +8,3 @@ Evald German - TempestFlow |
 Augustas Ilgis - Buskud0 |
 Naglis Butkevičius - naglisbutkevicius |
 Romuald Chatkevič - SillyRomuald |
-
-npm run dev
