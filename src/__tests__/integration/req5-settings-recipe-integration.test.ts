@@ -6,10 +6,7 @@
  * ir receptų generavimo su filtramis.
  */
 
-import { generateRecipes } from "@/lib/generateRecipes";
-import { UserPreferences } from "@/types/preferences";
-
-// Mock OpenAI
+// Mock OpenAI — must be declared before importing modules that instantiate it
 jest.mock("openai", () => {
   return {
     __esModule: true,
@@ -22,6 +19,9 @@ jest.mock("openai", () => {
     })),
   };
 });
+
+import { generateRecipes } from "@/lib/generateRecipes";
+import { UserPreferences } from "@/types/preferences";
 
 import OpenAI from "openai";
 

@@ -196,7 +196,7 @@ describe("REQ-5: HomePage Integration with Settings Preferences", () => {
         complexPrefs
       );
 
-      expect(recipes[0].ingredients).not.toMatch(/pienas|kiaušiniai|riešutai|mėsa|žuvis/i);
+      expect(recipes[0].ingredients.join(" ")).not.toMatch(/pienas|kiaušiniai|riešutai|mėsa|žuvis/i);
     });
 
     it("✓ Scenā: Iš naujo naudojant tą patį vartotoją, preferencijos tebėra aktyvios", async () => {

@@ -421,7 +421,7 @@ describe("REQ-5: Alergijų ir dietų pasirinkimas profilyje", () => {
         { allergies: [], diets: [] }
       );
 
-      expect(recipes[0].ingredients).toMatch(/[Pp]ienas|[Ss]viestas/);
+      expect(recipes[0].ingredients.join(" ")).toMatch(/[Pp]ienas|[Ss]viestas/);
     });
 
     it("✓ Žingsnis 3: Išsaugojus naują alergiją (Pienas), ji turėtų veikti", async () => {
@@ -449,7 +449,7 @@ describe("REQ-5: Alergijų ir dietų pasirinkimas profilyje", () => {
         preferences
       );
 
-      expect(recipes[0].ingredients).not.toMatch(/[Pp]ienas|[Ss]viestas/);
+      expect(recipes[0].ingredients.join(" ")).not.toMatch(/[Pp]ienas|[Ss]viestas/);
     });
 
     it("✓ Žingsnis 4: Pakeitę nustatymą, naujas receptas neturi draudžiamų ingredientų", async () => {
@@ -485,10 +485,10 @@ describe("REQ-5: Alergijų ir dietų pasirinkimas profilyje", () => {
       const ingredientList = ["Kiaušiniai", "Miltai", "Pienas", "Sviestas", "Cukrus"];
 
       const recipes1 = await generateRecipes(ingredientList, [], oldPrefs);
-      expect(recipes1[0].ingredients).toMatch(/[Pp]ienas/);
+      expect(recipes1[0].ingredients.join(" ")).toMatch(/[Pp]ienas/);
 
       const recipes2 = await generateRecipes(ingredientList, [], newPrefs);
-      expect(recipes2[0].ingredients).not.toMatch(/[Pp]ienas|[Ss]viestas/);
+      expect(recipes2[0].ingredients.join(" ")).not.toMatch(/[Pp]ienas|[Ss]viestas/);
     });
   });
 
