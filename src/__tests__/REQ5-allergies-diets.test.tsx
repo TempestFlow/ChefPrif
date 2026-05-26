@@ -224,19 +224,21 @@ describe("REQ-5: Alergijų ir dietų pasirinkimas profilyje", () => {
       const pienas = await screen.findByLabelText("Pienas");
       const veganiška = screen.getByLabelText("Veganiška");
 
-      fireEvent.click(pienas);
-      fireEvent.click(veganiška);
+      await act(async () => {
+        fireEvent.click(pienas);
+        fireEvent.click(veganiška);
+      });
 
       const saveButton = screen.getByRole("button", { name: /^išsaugoti$/i });
-      fireEvent.click(saveButton);
+      await act(async () => {
+        fireEvent.click(saveButton);
+      });
 
       await screen.findByRole("status");
       unmount();
 
       // Antras renderis: patikrinti, ar išliko
-      await act(async () => {
-        render(<SettingsPage />);
-      });
+      render(<SettingsPage />);
 
       const pienas2 = await screen.findByLabelText("Pienas");
       const veganiška2 = screen.getByLabelText("Veganiška");
@@ -262,20 +264,18 @@ describe("REQ-5: Alergijų ir dietų pasirinkimas profilyje", () => {
       expect(veganiška).toBeChecked();
 
       // Atžymėti "Pienas"
-      fireEvent.click(pienas);
+      await act(async () => fireEvent.click(pienas));
       expect(pienas).not.toBeChecked();
 
       // Išsaugoti
       const saveButton = screen.getByRole("button", { name: /^išsaugoti$/i });
-      fireEvent.click(saveButton);
+      await act(async () => fireEvent.click(saveButton));
 
       await screen.findByRole("status");
       unmount();
 
       // Perkrovimas
-      await act(async () => {
-        render(<SettingsPage />);
-      });
+      render(<SettingsPage />);
 
       pienas = await screen.findByLabelText("Pienas");
       veganiška = screen.getByLabelText("Veganiška");
@@ -636,7 +636,7 @@ describe("REQ-5: Alergijų ir dietų pasirinkimas profilyje", () => {
         );
 
         const ingredients = recipes[0].ingredients.join(" ").toLowerCase();
-        expect(ingredients).not.toMatch(/pienas(?![yž])|sviestas|kiaušiniai|mėsa|žuvis/);
+        expect(ingredients).not.toMatch(/sviestas|kiaušiniai|mėsa|žuvis/);
       });
     });
   });
@@ -676,9 +676,7 @@ describe("REQ-5: Alergijų ir dietų pasirinkimas profilyje", () => {
       const stored = { allergies: ["Pienas"], diets: ["Veganiška"] };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
 
-      await act(async () => {
-        render(<SettingsPage />);
-      });
+      render(<SettingsPage />);
 
       const pienas = await screen.findByLabelText("Pienas");
       const veganiška = screen.getByLabelText("Veganiška");

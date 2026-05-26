@@ -6,19 +6,20 @@
  * ir receptų generavimo su filtramis.
  */
 
+const createMock = jest.fn();
+const mockOpenAIInstance = {
+  chat: {
+    completions: {
+      create: createMock,
+    },
+  },
+};
+
 // Mock OpenAI — must be declared before importing modules that instantiate it
-jest.mock("openai", () => {
-  return {
-    __esModule: true,
-    default: jest.fn(() => ({
-      chat: {
-        completions: {
-          create: jest.fn(),
-        },
-      },
-    })),
-  };
-});
+jest.mock("openai", () => ({
+  __esModule: true,
+  default: jest.fn(() => mockOpenAIInstance),
+}));
 
 import { generateRecipes } from "@/lib/generateRecipes";
 import { UserPreferences } from "@/types/preferences";
@@ -26,10 +27,11 @@ import { UserPreferences } from "@/types/preferences";
 import OpenAI from "openai";
 
 describe("REQ-5 Integration Tests: Settings → Recipe Generation", () => {
-  let openaiMock: jest.Mocked<OpenAI>;
+  let openaiMock: any;
 
   beforeEach(() => {
-    openaiMock = new OpenAI() as jest.Mocked<OpenAI>;
+    jest.clearAllMocks();
+    openaiMock = new OpenAI() as any;
   });
 
   describe("Integration: Settings with Recipe Generation", () => {
