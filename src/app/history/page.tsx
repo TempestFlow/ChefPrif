@@ -15,9 +15,12 @@ const isDemo =
 const HISTORY_STORAGE_KEY = "recipeHistory";
 const SAVED_RECIPES_KEY = "savedRecipes";
 
-function formatDate(iso: string): string {
+export function formatDate(iso: string): string {
   try {
     const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) {
+      return iso;
+    }
     return date.toLocaleString("lt-LT", {
       year: "numeric",
       month: "2-digit",

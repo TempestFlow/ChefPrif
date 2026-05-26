@@ -16,7 +16,7 @@ jest.mock("@/lib/supabase", () => ({
   },
 }));
 
-import HistoryPage from "@/app/history/page";
+import HistoryPage, { formatDate } from "@/app/history/page";
 
 const HISTORY_KEY = "recipeHistory";
 
@@ -78,6 +78,10 @@ describe("HistoryPage", () => {
       render(<HistoryPage />);
 
       await screen.findByText(/Istorija tuščia/i, undefined, { timeout: 3000 });
+    });
+
+    it("grąžina originalų ISO, jei datos formatas neteisingas", () => {
+      expect(formatDate("neteisinga-data")).toBe("neteisinga-data");
     });
 
     it("rodo iki 10 įrašų sąraše", async () => {
