@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Heart, Copy, AlertTriangle } from "lucide-react";
 import { Recipe } from "@/types/recipe";
 
 interface RecipeCardProps {
@@ -43,46 +44,54 @@ export default function RecipeCard({ recipe, isSaved, onToggleSave }: RecipeCard
 
   return (
     <>
-      <article className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+      <article className="animate-fade-in-up rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_2px_12px_rgba(166,124,82,0.08)] transition-shadow hover:shadow-[0_8px_24px_rgba(166,124,82,0.12)]">
         {/* Pavadinimas ir porcijos */}
         <div className="mb-4 flex items-start justify-between gap-4">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+          <h3 className="font-display text-2xl font-semibold leading-tight text-[var(--ink)]">
             {recipe.title}
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <button
               type="button"
               onClick={onToggleSave}
               title={isSaved ? "Pašalinti iš išsaugotų" : "Išsaugoti receptą"}
-              className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors ${
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
                 isSaved
-                  ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
-                  : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                  ? "border-transparent bg-[var(--saved)]/12 text-[var(--saved)]"
+                  : "border-[var(--border)] bg-[var(--bg)] text-[var(--ink-muted)] hover:border-[var(--saved)]/40 hover:text-[var(--saved)]"
               }`}
               data-testid="save-recipe"
             >
-              <span className="text-2xl">{isSaved ? "❤️" : "🤍"}</span>
+              <Heart
+                size={20}
+                strokeWidth={2}
+                fill={isSaved ? "currentColor" : "none"}
+                aria-hidden
+              />
             </button>
-            <span className="shrink-0 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-              {recipe.servings} porcij{recipe.servings === 1 ? "a" : "os"}
-            </span>
           </div>
         </div>
 
-        {/* Kalorijos */}
-        <p className="mb-4 text-sm text-zinc-500 dark:text-zinc-400">
-          ~{recipe.estimated_calories} kcal / porcijai
-        </p>
+        {/* Meta — porcijos + kalorijos */}
+        <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--ink-muted)]">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--secondary)]" aria-hidden />
+            {recipe.servings} porcij{recipe.servings === 1 ? "a" : "os"}
+          </span>
+          <span className="text-[var(--border)]" aria-hidden>·</span>
+          <span>~{recipe.estimated_calories} kcal / porcijai</span>
+        </div>
 
         {/* Ingredientai */}
-        <div className="mb-4">
-          <h4 className="mb-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        <div className="mb-5">
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--ink-muted)]">
             Ingredientai
           </h4>
           <ul className="space-y-1">
             {recipe.ingredients.map((ing, i) => (
-              <li key={i} className="text-sm text-zinc-600 dark:text-zinc-400">
-                • {ing}
+              <li key={i} className="flex gap-2 text-sm text-[var(--ink)]">
+                <span className="text-[var(--secondary)]" aria-hidden>•</span>
+                <span>{ing}</span>
               </li>
             ))}
           </ul>
@@ -90,23 +99,24 @@ export default function RecipeCard({ recipe, isSaved, onToggleSave }: RecipeCard
 
         {/* Trūkstami ingredientai */}
         {recipe.missing_ingredients.length > 0 && (
-          <div className="mb-4 rounded-lg bg-amber-50 px-4 py-3 dark:bg-amber-900/20">
+          <div className="mb-5 rounded-xl border border-[var(--warning)]/25 bg-[var(--warning-soft)] px-4 py-3">
             <div className="mb-2 flex items-center justify-between gap-2">
-              <h4 className="text-sm font-medium text-amber-700 dark:text-amber-400">
+              <h4 className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--warning)]">
+                <AlertTriangle size={15} aria-hidden />
                 Trūkstami ingredientai
               </h4>
               <button
                 type="button"
                 onClick={handleCopyShoppingList}
                 title="Kopijuoti sąrašą"
-                className="inline-flex items-center gap-2 rounded-lg px-6 py-3 text-base font-bold text-amber-700 transition-colors hover:bg-amber-200 dark:text-amber-400 dark:hover:bg-amber-900/60"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--warning)]/30 bg-[var(--surface)]/60 px-3 py-1.5 text-xs font-medium text-[var(--warning)] transition-colors hover:bg-[var(--warning)]/10"
                 data-testid="copy-shopping-list"
               >
-                <span className="text-xl">📋</span>
+                <Copy size={13} aria-hidden />
                 Kopijuoti
               </button>
             </div>
-            <p className="text-sm text-amber-600 dark:text-amber-500">
+            <p className="text-sm text-[var(--ink)]/80">
               {recipe.missing_ingredients.join(", ")}
             </p>
           </div>
@@ -114,16 +124,16 @@ export default function RecipeCard({ recipe, isSaved, onToggleSave }: RecipeCard
 
         {/* Gaminimo žingsniai */}
         <div>
-          <h4 className="mb-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--ink-muted)]">
             Gaminimo žingsniai
           </h4>
-          <ol className="space-y-2">
+          <ol className="space-y-2.5">
             {recipe.steps.map((step, i) => (
-              <li key={i} className="flex gap-3 text-sm text-zinc-600 dark:text-zinc-400">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-xs font-medium text-green-700 dark:bg-green-900/40 dark:text-green-400">
+              <li key={i} className="flex gap-3 text-sm leading-relaxed text-[var(--ink)]">
+                <span className="font-display flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--primary)]/12 text-xs font-semibold text-[var(--primary)]">
                   {i + 1}
                 </span>
-                {step}
+                <span className="pt-0.5">{step}</span>
               </li>
             ))}
           </ol>
@@ -133,7 +143,7 @@ export default function RecipeCard({ recipe, isSaved, onToggleSave }: RecipeCard
       {/* Toast notifikacija */}
       {toast && (
         <div
-          className="fixed bottom-4 left-4 right-4 max-w-sm rounded-lg bg-green-600 px-4 py-3 text-sm font-medium text-white shadow-lg dark:bg-green-700 sm:left-auto sm:right-4"
+          className="animate-fade-in-up fixed bottom-4 left-4 right-4 z-50 max-w-sm rounded-xl bg-[var(--primary)] px-4 py-3 text-sm font-medium text-white shadow-[0_8px_24px_rgba(166,124,82,0.25)] sm:left-auto sm:right-4"
           data-testid="toast"
         >
           {toast}

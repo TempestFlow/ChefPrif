@@ -1,5 +1,7 @@
 "use client";
 
+import { Trash2, X } from "lucide-react";
+
 interface IngredientListProps {
   ingredients: string[];
   onRemove: (ingredient: string) => void;
@@ -15,7 +17,7 @@ export default function IngredientList({
 }: IngredientListProps) {
   if (ingredients.length === 0) {
     return (
-      <p className="text-sm text-zinc-400 dark:text-zinc-500">
+      <p className="text-sm italic text-[var(--ink-muted)]">
         Kol kas nepridėta jokių ingredientų.
       </p>
     );
@@ -26,34 +28,35 @@ export default function IngredientList({
       <button
         type="button"
         onClick={onRemoveAll}
-        className="text-sm text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+        className="inline-flex items-center gap-1.5 text-sm text-[var(--ink-muted)] transition-colors hover:text-[var(--saved)]"
       >
+        <Trash2 size={14} aria-hidden />
         Pašalinti visus ingredientus
       </button>
-    <div className="flex flex-wrap gap-2">
-      {ingredients.map((ingredient) => (
-        <span
-          key={ingredient}
-          className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1.5 text-sm font-medium text-green-700 dark:bg-green-900/30 dark:text-green-300"
-        >
-          <button
-            type="button"
-            onClick={() => onEdit(ingredient)}
-            className="hover:underline focus:outline-none"
+      <div className="flex flex-wrap gap-2">
+        {ingredients.map((ingredient) => (
+          <span
+            key={ingredient}
+            className="inline-flex items-center gap-1 rounded-full bg-[var(--secondary-soft)] py-1.5 pl-3 pr-1.5 text-sm font-medium text-[var(--secondary)]"
           >
-            {ingredient}
-          </button>
-          <button
-            type="button"
-            onClick={() => onRemove(ingredient)}
-            className="ml-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full text-green-600 transition-colors hover:bg-green-200 hover:text-green-800 dark:text-green-400 dark:hover:bg-green-800 dark:hover:text-green-200"
-            aria-label={`Pašalinti ${ingredient}`}
-          >
-            ×
-          </button>
-        </span>
-      ))}
-    </div>
+            <button
+              type="button"
+              onClick={() => onEdit(ingredient)}
+              className="hover:underline focus:outline-none"
+            >
+              {ingredient}
+            </button>
+            <button
+              type="button"
+              onClick={() => onRemove(ingredient)}
+              className="inline-flex h-5 w-5 items-center justify-center rounded-full text-[var(--secondary)] transition-colors hover:bg-[var(--secondary)] hover:text-white"
+              aria-label={`Pašalinti ${ingredient}`}
+            >
+              <X size={12} strokeWidth={2.5} aria-hidden />
+            </button>
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

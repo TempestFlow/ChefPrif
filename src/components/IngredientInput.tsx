@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { Search, AlertCircle } from "lucide-react";
 import { filterIngredients } from "@/data/ingredients";
 
 interface IngredientInputProps {
@@ -172,11 +173,14 @@ export default function IngredientInput({
   const isAddDisabled = !selectedIngredient;
   const isEditing = !!editingIngredient;
 
+  const fieldClass =
+    "w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--ink)] placeholder-[var(--ink-muted)]/70 transition-colors focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/25";
+
   return (
     <div className="w-full max-w-md">
       <label
         htmlFor="ingredient-input"
-        className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+        className="mb-2 block text-sm font-medium text-[var(--ink)]"
       >
         Įveskite ingredientą
       </label>
@@ -184,6 +188,12 @@ export default function IngredientInput({
       <div className="relative">
         <div className="flex gap-2">
           <div className="relative flex-1">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--ink-muted)]"
+              size={16}
+              strokeWidth={2}
+              aria-hidden
+            />
             <input
               ref={inputRef}
               id="ingredient-input"
@@ -193,7 +203,7 @@ export default function IngredientInput({
               onKeyDown={handleKeyDown}
               placeholder="Pvz.: Pomidoras, Sviestas..."
               autoComplete="off"
-              className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500"
+              className={`${fieldClass} pl-9`}
               aria-expanded={showDropdown}
               aria-haspopup="listbox"
               aria-autocomplete="list"
@@ -205,7 +215,7 @@ export default function IngredientInput({
               <ul
                 ref={dropdownRef}
                 role="listbox"
-                className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-zinc-200 bg-white shadow-lg dark:border-zinc-600 dark:bg-zinc-800"
+                className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-[var(--border)] bg-[var(--surface)] shadow-[0_8px_24px_rgba(166,124,82,0.12)]"
               >
                 {suggestions.map((ingredient, index) => (
                   <li
@@ -214,8 +224,8 @@ export default function IngredientInput({
                     aria-selected={highlightedIndex === index}
                     className={`cursor-pointer px-4 py-2 text-sm transition-colors ${
                       highlightedIndex === index
-                        ? "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                        : "text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                        ? "bg-[var(--primary)]/10 text-[var(--primary)]"
+                        : "text-[var(--ink)] hover:bg-[var(--bg)]"
                     }`}
                     onMouseDown={(e) => {
                       e.preventDefault();
@@ -235,7 +245,7 @@ export default function IngredientInput({
           <div>
             <label
               htmlFor="ingredient-quantity"
-              className="mb-1 block text-xs font-medium text-zinc-600 dark:text-zinc-300"
+              className="mb-1 block text-xs font-medium text-[var(--ink-muted)]"
             >
               Kiekis
             </label>
@@ -252,13 +262,13 @@ export default function IngredientInput({
                 if (val === "" || (Number(val) >= 1 && Number(val) <= 1000)) setQuantity(val);
               }}
               placeholder="pvz.: 500"
-              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+              className={fieldClass.replace("px-4 py-2.5", "px-3 py-2")}
             />
           </div>
           <div>
             <label
               htmlFor="ingredient-unit"
-              className="mb-1 block text-xs font-medium text-zinc-600 dark:text-zinc-300"
+              className="mb-1 block text-xs font-medium text-[var(--ink-muted)]"
             >
               Vienetai
             </label>
@@ -266,7 +276,7 @@ export default function IngredientInput({
               id="ingredient-unit"
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+              className={fieldClass.replace("px-4 py-2.5", "px-3 py-2")}
             >
               <option value="g">g</option>
               <option value="kg">kg</option>
@@ -285,10 +295,10 @@ export default function IngredientInput({
             disabled={isAddDisabled}
             className={`w-full rounded-lg px-5 py-2.5 text-sm font-medium transition-colors ${
               isAddDisabled
-                ? "cursor-not-allowed bg-zinc-200 text-zinc-400 dark:bg-zinc-700 dark:text-zinc-500"
+                ? "cursor-not-allowed bg-[var(--border)] text-[var(--ink-muted)]"
                 : isEditing
-                ? "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800"
-                : "bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
+                ? "bg-[var(--secondary)] text-white hover:brightness-95 active:brightness-90"
+                : "bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] active:brightness-95"
             }`}
           >
             {isEditing ? "Pakeisti ingredientą" : "Pridėti"}
@@ -297,9 +307,13 @@ export default function IngredientInput({
 
         {/* AC-3: Klaidos pranešimas */}
         {noMatchFound && (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">
-            Tokio ingrediento neradome. Prašome pasirinkti iš sąrašo.
-          </p>
+          <div
+            className="mt-2 flex items-start gap-2 rounded-lg border border-[var(--primary)]/30 bg-[var(--danger-soft)] px-3 py-2 text-sm text-[var(--danger)]"
+            role="alert"
+          >
+            <AlertCircle size={16} className="mt-0.5 shrink-0" aria-hidden />
+            <span>Tokio ingrediento neradome. Prašome pasirinkti iš sąrašo.</span>
+          </div>
         )}
       </div>
     </div>

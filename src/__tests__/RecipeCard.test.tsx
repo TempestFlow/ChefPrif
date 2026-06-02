@@ -78,12 +78,16 @@ describe("RecipeCard - Save Recipe Feature", () => {
 
   it("rodo balta sirdele kai receptas neissaugotas", () => {
     renderCard(false);
-    expect(screen.getByTestId("save-recipe")).toHaveTextContent("\uD83E\uDD0D");
+    const heartIcon = screen.getByTestId("save-recipe").querySelector("svg");
+    expect(heartIcon).toBeInTheDocument();
+    expect(heartIcon).toHaveAttribute("fill", "none");
   });
 
   it("rodo raudona sirdele kai receptas issaugotas", () => {
     renderCard(true);
-    expect(screen.getByTestId("save-recipe")).toHaveTextContent("\u2764\uFE0F");
+    const heartIcon = screen.getByTestId("save-recipe").querySelector("svg");
+    expect(heartIcon).toBeInTheDocument();
+    expect(heartIcon).toHaveAttribute("fill", "currentColor");
   });
 
   it("isskviecia onToggleSave paspaudus mygtuka", () => {

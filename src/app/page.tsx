@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Search, Bookmark, ChefHat, AlertCircle, LogOut, BookmarkPlus, History, Settings } from "lucide-react";
 import IngredientInput from "@/components/IngredientInput";
 import IngredientList from "@/components/IngredientList";
 import RecipeCard from "@/components/RecipeCard";
@@ -20,7 +21,6 @@ export default function Home() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [editingIngredient, setEditingIngredient] = useState<string | null>(null);
-  // Task 2.3 (GUI): receptų būsena
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +51,6 @@ export default function Home() {
     setEditingIngredient(null);
   }
 
-  // Task 2.3 (GUI): "Ieškoti receptų" mygtuko logika
   async function handleGenerateRecipes() {
     const now = Date.now();
     const elapsed = now - lastRequestRef.current;
@@ -158,7 +157,6 @@ export default function Home() {
   function handleToggleSave(recipe: Recipe) {
     const isCurrentlySaved = savedRecipes.some(r => r.title === recipe.title);
     if (isCurrentlySaved) {
-      // unsave
       const newSaved = savedRecipes.filter(r => r.title !== recipe.title);
       setSavedRecipes(newSaved);
       if (isDemo) {
@@ -171,7 +169,6 @@ export default function Home() {
         });
       }
     } else {
-      // save
       const newSaved = [...savedRecipes, recipe];
       setSavedRecipes(newSaved);
       if (isDemo) {
@@ -229,11 +226,12 @@ export default function Home() {
   }
 
   const hasRecipes = recipes !== null;
-  const hasContent = hasRecipes || showSaved;
+  const hasContent = hasRecipes || showSaved || isLoading;
+  const displayedRecipes = showSaved ? savedRecipes : recipes;
+  const showSavedEmpty = showSaved && savedRecipes.length === 0 && !isLoading;
 
   return (
-    <div className="min-h-screen bg-zinc-50 font-sans dark:bg-zinc-950">
-      {/* Kai nėra receptų — centruotas layout; kai yra — dviejų stulpelių */}
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)]">
       <div
         className={`flex min-h-screen ${
           hasContent
@@ -243,55 +241,66 @@ export default function Home() {
       >
         {/* Kairė pusė — ingredientai */}
         <main
-          className={`px-4 py-12 sm:px-8 ${
+          className={`px-5 py-10 sm:px-8 ${
             hasContent
-              ? "w-full lg:w-80 xl:w-96 lg:min-h-screen lg:border-r border-zinc-200 dark:border-zinc-800 shrink-0"
+              ? "w-full lg:w-96 xl:w-[26rem] lg:min-h-screen lg:border-r border-[var(--border)] shrink-0"
               : "w-full max-w-2xl"
           }`}
         >
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-10">
             <div className="flex items-start justify-between gap-2">
-              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-                🍳 Fridge Chef
-              </h1>
+              <div className="flex items-center gap-2.5">
+                <span
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--primary)]/12 text-[var(--primary)]"
+                  aria-hidden
+                >
+                  <ChefHat size={22} strokeWidth={2} />
+                </span>
+                <h1 className="font-display text-3xl font-semibold leading-none text-[var(--ink)]">
+                  Fridge Chef
+                </h1>
+              </div>
               {userEmail && (
                 <div className="text-right">
-                  <p className="text-xs text-zinc-400 dark:text-zinc-500 truncate max-w-35">{userEmail}</p>
-                  <div className="flex items-center justify-end gap-2">
+                  <p className="max-w-[10rem] truncate text-xs text-[var(--ink-muted)]">{userEmail}</p>
+                  <div className="mt-1 flex items-center justify-end gap-2.5 text-xs">
                     <Link
                       href="/history"
-                      className="text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
+                      className="inline-flex items-center gap-1 text-[var(--ink-muted)] transition-colors hover:text-[var(--primary)]"
                     >
+                      <History size={11} aria-hidden />
                       Istorija
                     </Link>
-                    <span className="text-xs text-zinc-300 dark:text-zinc-600">•</span>
+                    <span className="text-[var(--border)]" aria-hidden>•</span>
                     <Link
                       href="/settings"
-                      className="text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
+                      className="inline-flex items-center gap-1 text-[var(--ink-muted)] transition-colors hover:text-[var(--primary)]"
                     >
+                      <Settings size={11} aria-hidden />
                       Nustatymai
                     </Link>
-                    <span className="text-xs text-zinc-300 dark:text-zinc-600">•</span>
+                    <span className="text-[var(--border)]" aria-hidden>•</span>
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                      className="inline-flex items-center gap-1 text-[var(--ink-muted)] transition-colors hover:text-[var(--saved)]"
                     >
+                      <LogOut size={11} aria-hidden />
                       Atsijungti
                     </button>
                   </div>
                 </div>
               )}
             </div>
-            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-              Įveskite turimus ingredientus ir gaukite receptų pasiūlymus
+            <p className="mt-3 text-sm leading-relaxed text-[var(--ink-muted)]">
+              Įveskite turimus ingredientus ir gaukite receptų pasiūlymus.
             </p>
           </div>
 
           {/* Ingredientų įvedimas (REQ-1) */}
           <section className="mb-8">
-            <h2 className="mb-4 text-lg font-semibold text-zinc-800 dark:text-zinc-200">
+            <h2 className="font-display mb-4 text-xl font-semibold text-[var(--ink)]">
               Mano ingredientai
             </h2>
             <IngredientInput
@@ -304,7 +313,7 @@ export default function Home() {
 
           {/* Pridėtų ingredientų sąrašas */}
           <section>
-            <h2 className="mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--ink-muted)]">
               Pridėti ingredientai ({ingredients.length})
             </h2>
             <IngredientList
@@ -315,89 +324,150 @@ export default function Home() {
             />
           </section>
 
-          {/* Task 2.3 (GUI): "Ieškoti receptų" mygtukas */}
-          {ingredients.length > 0 && <div className="mt-8">
-            <button
-              type="button"
-              onClick={handleGenerateRecipes}
-              disabled={isLoading || ingredients.length === 0}
-              className={`w-full max-w-md rounded-lg px-6 py-3 text-sm font-medium transition-colors ${
-                isLoading || ingredients.length === 0
-                  ? "cursor-not-allowed bg-gray-400 text-gray-200 dark:bg-gray-600 dark:text-gray-400"
-                  : "bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
-              }`}
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                  Generuojama...
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  <span>🔍</span>
-                  Ieškoti receptų
-                </span>
-              )}
-            </button>
-
-            {/* AC-4: Klaidos pranešimas */}
-            {error && (
-              <p
-                className="mt-3 text-sm text-red-600 dark:text-red-400"
-                role="alert"
-              >
-                {error}
-              </p>
-            )}
-          </div>}
-
-          {/* Sugeneruoti receptai mygtukas - rodomas kai yra sugeneruoti arba išsaugoti receptai */}
-          {(hasRecipes || showSaved) && (
-            <div className="mt-8">
+          {/* Primary CTA — generate */}
+          {ingredients.length > 0 && (
+            <div className="mt-8 space-y-2">
               <button
                 type="button"
-                onClick={() => setShowSaved(false)}
-                className="w-full max-w-md rounded-lg px-6 py-3 text-sm font-medium bg-orange-500 text-white hover:bg-orange-600 active:bg-orange-700 transition-colors flex items-center justify-center gap-2"
+                onClick={handleGenerateRecipes}
+                disabled={isLoading || ingredients.length === 0}
+                className={`inline-flex w-full max-w-md items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold transition-all ${
+                  isLoading || ingredients.length === 0
+                    ? "cursor-not-allowed bg-[var(--border)] text-[var(--ink-muted)]"
+                    : "bg-[var(--primary)] text-white shadow-[0_4px_14px_rgba(198,107,61,0.25)] hover:bg-[var(--primary-hover)] hover:shadow-[0_6px_18px_rgba(198,107,61,0.32)] active:translate-y-px"
+                }`}
               >
-                <span>🍽️</span>
-                Sugeneruoti receptai
+                {isLoading ? (
+                  <>
+                    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/70 border-t-transparent" />
+                    Generuojama...
+                  </>
+                ) : (
+                  <>
+                    <Search size={16} aria-hidden />
+                    Ieškoti receptų
+                  </>
+                )}
               </button>
+
+              {error && (
+                <div
+                  className="flex items-start gap-2 rounded-lg border border-[var(--primary)]/25 bg-[var(--danger-soft)] px-3 py-2 text-sm text-[var(--danger)]"
+                  role="alert"
+                >
+                  <AlertCircle size={16} className="mt-0.5 shrink-0" aria-hidden />
+                  <span>{error}</span>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Išsaugoti receptai mygtukas */}
-          <div className="mt-8">
+          {/* Secondary nav — show generated/saved (ghost style) */}
+          <div className="mt-6 grid w-full max-w-md grid-cols-1 gap-2 sm:grid-cols-2">
+            {(hasRecipes || showSaved) && (
+              <button
+                type="button"
+                onClick={() => setShowSaved(false)}
+                disabled={!hasRecipes}
+                className={`inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors ${
+                  !showSaved
+                    ? "border-[var(--primary)]/40 bg-[var(--primary)]/8 text-[var(--primary)]"
+                    : "border-[var(--border)] bg-transparent text-[var(--ink)] hover:border-[var(--primary)]/30 hover:text-[var(--primary)]"
+                } ${!hasRecipes ? "cursor-not-allowed opacity-50" : ""}`}
+              >
+                <Search size={14} aria-hidden />
+                Sugeneruoti
+              </button>
+            )}
             <button
               type="button"
               onClick={handleShowSavedRecipes}
-              className="w-full max-w-md rounded-lg px-6 py-3 text-sm font-medium bg-rose-500 text-white hover:bg-rose-600 active:bg-rose-700 transition-colors flex items-center justify-center gap-2"
+              className={`inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors ${
+                showSaved
+                  ? "border-[var(--saved)]/40 bg-[var(--saved)]/10 text-[var(--saved)]"
+                  : "border-[var(--border)] bg-transparent text-[var(--ink)] hover:border-[var(--saved)]/30 hover:text-[var(--saved)]"
+              } ${!(hasRecipes || showSaved) ? "sm:col-span-2" : ""}`}
             >
-              <span>❤️</span>
-              Išsaugoti receptai
+              <Bookmark size={14} aria-hidden />
+              Išsaugoti
             </button>
           </div>
         </main>
 
-        {/* Dešinė pusė — receptai (kai sugeneruota arba išsaugoti) */}
-        {(hasRecipes || showSaved) && (
-          <section className="flex-1 px-4 py-12 sm:px-8">
-            <h2 className="mb-6 text-lg font-semibold text-zinc-800 dark:text-zinc-200">
-              {showSaved ? `Išsaugoti receptai (${savedRecipes.length})` : `Sugeneruoti receptai (${recipes?.length || 0})`}
+        {/* Dešinė pusė — receptai (kai sugeneruota, įkeliama arba išsaugoti) */}
+        {hasContent && (
+          <section className="flex-1 px-5 py-10 sm:px-8">
+            <h2 className="font-display mb-6 text-2xl font-semibold text-[var(--ink)]">
+              {isLoading
+                ? "Generuojami receptai..."
+                : showSaved
+                ? `Išsaugoti receptai (${savedRecipes.length})`
+                : `Sugeneruoti receptai (${recipes?.length || 0})`}
             </h2>
 
-            <div className="flex flex-col gap-6">
-              {(showSaved ? savedRecipes : recipes)?.map((recipe, index) => (
-                <RecipeCard
-                  key={index}
-                  recipe={recipe}
-                  isSaved={savedRecipes.some(r => r.title === recipe.title)}
-                  onToggleSave={() => handleToggleSave(recipe)}
-                />
-              ))}
-            </div>
+            {isLoading ? (
+              <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                {[0, 1, 2].map((i) => (
+                  <RecipeSkeleton key={i} />
+                ))}
+              </div>
+            ) : showSavedEmpty ? (
+              <EmptySaved />
+            ) : (
+              <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                {displayedRecipes?.map((recipe, index) => (
+                  <RecipeCard
+                    key={index}
+                    recipe={recipe}
+                    isSaved={savedRecipes.some(r => r.title === recipe.title)}
+                    onToggleSave={() => handleToggleSave(recipe)}
+                  />
+                ))}
+              </div>
+            )}
           </section>
         )}
       </div>
+    </div>
+  );
+}
+
+function RecipeSkeleton() {
+  return (
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_2px_12px_rgba(166,124,82,0.06)]">
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div className="skeleton h-7 w-2/3 rounded-md" />
+        <div className="skeleton h-10 w-10 rounded-full" />
+      </div>
+      <div className="skeleton mb-5 h-4 w-1/3 rounded-md" />
+      <div className="mb-5 space-y-2">
+        <div className="skeleton h-3 w-full rounded-md" />
+        <div className="skeleton h-3 w-5/6 rounded-md" />
+        <div className="skeleton h-3 w-4/6 rounded-md" />
+      </div>
+      <div className="space-y-2">
+        <div className="skeleton h-3 w-full rounded-md" />
+        <div className="skeleton h-3 w-3/4 rounded-md" />
+      </div>
+    </div>
+  );
+}
+
+function EmptySaved() {
+  return (
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]/40 px-6 py-16 text-center">
+      <span
+        className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--saved)]/10 text-[var(--saved)]"
+        aria-hidden
+      >
+        <BookmarkPlus size={22} />
+      </span>
+      <p className="font-display text-lg font-semibold text-[var(--ink)]">
+        Dar neturite išsaugotų receptų
+      </p>
+      <p className="mt-1 max-w-sm text-sm text-[var(--ink-muted)]">
+        Sugeneravę receptą, paspauskite širdelę, kad jį išsaugotumėte į savo kolekciją.
+      </p>
     </div>
   );
 }

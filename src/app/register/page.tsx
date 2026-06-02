@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { ChefHat, AlertCircle, MailCheck } from "lucide-react";
 
 function translateAuthError(message: string): string {
   if (message.includes("User already registered")) return "Šis el. paštas jau užregistruotas.";
@@ -18,6 +19,9 @@ function translateAuthError(message: string): string {
   if (message.includes("weak password") || message.includes("Password")) return "Slaptažodis per silpnas.";
   return `Registracijos klaida: ${message}`;
 }
+
+const fieldClass =
+  "w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--ink)] placeholder-[var(--ink-muted)]/70 transition-colors focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/25";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -72,21 +76,26 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 dark:bg-zinc-950">
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] px-4 py-10">
         <div className="w-full max-w-sm text-center">
-          <div className="mb-4 text-4xl">📧</div>
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
+          <span
+            className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--secondary-soft)] text-[var(--secondary)]"
+            aria-hidden
+          >
+            <MailCheck size={28} />
+          </span>
+          <h2 className="font-display text-2xl font-semibold text-[var(--ink)]">
             Patikrinkite el. paštą
           </h2>
-          <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-            Išsiuntėme patvirtinimo nuorodą į <strong>{email}</strong>.
+          <p className="mt-2 text-sm text-[var(--ink-muted)]">
+            Išsiuntėme patvirtinimo nuorodą į <strong className="text-[var(--ink)]">{email}</strong>.
             Paspauskite joje esančią nuorodą, kad aktyvuotumėte paskyrą.
           </p>
           <Link
             href="/login"
-            className="mt-6 inline-block text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400"
+            className="mt-6 inline-block text-sm font-medium text-[var(--primary)] hover:text-[var(--primary-hover)]"
           >
-            Grįžti į prisijungimą
+            ← Grįžti į prisijungimą
           </Link>
         </div>
       </div>
@@ -94,22 +103,31 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 dark:bg-zinc-950">
+    <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] px-4 py-10">
       <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-            🍳 Fridge Chef
+        <div className="mb-8 flex flex-col items-center text-center">
+          <span
+            className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--primary)]/12 text-[var(--primary)]"
+            aria-hidden
+          >
+            <ChefHat size={26} />
+          </span>
+          <h1 className="font-display text-3xl font-semibold text-[var(--ink)]">
+            Fridge Chef
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-[var(--ink-muted)]">
             Sukurkite naują paskyrą
           </p>
         </div>
 
-        <form onSubmit={handleRegister} className="space-y-4">
+        <form
+          onSubmit={handleRegister}
+          className="space-y-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_2px_12px_rgba(166,124,82,0.06)]"
+        >
           <div>
             <label
               htmlFor="email"
-              className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              className="mb-1 block text-sm font-medium text-[var(--ink)]"
             >
               El. paštas
             </label>
@@ -120,7 +138,7 @@ export default function RegisterPage() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500"
+              className={fieldClass}
               placeholder="jusu@pastas.lt"
             />
           </div>
@@ -128,7 +146,7 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="password"
-              className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              className="mb-1 block text-sm font-medium text-[var(--ink)]"
             >
               Slaptažodis
             </label>
@@ -139,7 +157,7 @@ export default function RegisterPage() {
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500"
+              className={fieldClass}
               placeholder="••••••••"
             />
           </div>
@@ -147,7 +165,7 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              className="mb-1 block text-sm font-medium text-[var(--ink)]"
             >
               Pakartokite slaptažodį
             </label>
@@ -158,35 +176,39 @@ export default function RegisterPage() {
               autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500"
+              className={fieldClass}
               placeholder="••••••••"
             />
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 dark:text-red-400" role="alert">
-              {error}
-            </p>
+            <div
+              className="flex items-start gap-2 rounded-lg border border-[var(--primary)]/25 bg-[var(--danger-soft)] px-3 py-2 text-sm text-[var(--danger)]"
+              role="alert"
+            >
+              <AlertCircle size={16} className="mt-0.5 shrink-0" aria-hidden />
+              <span>{error}</span>
+            </div>
           )}
 
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full rounded-lg px-5 py-2.5 text-sm font-medium transition-colors ${
+            className={`w-full rounded-lg px-5 py-2.5 text-sm font-semibold transition-all ${
               isLoading
-                ? "cursor-not-allowed bg-zinc-300 text-zinc-500 dark:bg-zinc-700 dark:text-zinc-400"
-                : "bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
+                ? "cursor-not-allowed bg-[var(--border)] text-[var(--ink-muted)]"
+                : "bg-[var(--primary)] text-white shadow-[0_4px_14px_rgba(198,107,61,0.25)] hover:bg-[var(--primary-hover)] active:translate-y-px"
             }`}
           >
             {isLoading ? "Kuriama paskyra..." : "Registruotis"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-6 text-center text-sm text-[var(--ink-muted)]">
           Jau turite paskyrą?{" "}
           <Link
             href="/login"
-            className="font-medium text-green-600 hover:text-green-700 dark:text-green-400"
+            className="font-medium text-[var(--primary)] hover:text-[var(--primary-hover)]"
           >
             Prisijungti
           </Link>
