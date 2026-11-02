@@ -1,0 +1,116 @@
+NLOC,CCN,token,PARAM,length,location,file,function,long_name,start,end
+1,1,5,0,1,"(anonymous)@22-22@src\app\api\generate-recipe\route.ts","src\app\api\generate-recipe\route.ts","(anonymous)","(anonymous)",22,22
+1,1,5,0,1,"(anonymous)@25-25@src\app\api\generate-recipe\route.ts","src\app\api\generate-recipe\route.ts","(anonymous)","(anonymous)",25,25
+55,14,337,1,68,"POST@8-75@src\app\api\generate-recipe\route.ts","src\app\api\generate-recipe\route.ts","POST","POST ( request NextRequest )",8,75
+6,1,29,0,6,"(anonymous)@37-42@src\app\api\recipes\history\route.ts","src\app\api\recipes\history\route.ts","(anonymous)","(anonymous)",37,42
+24,4,174,1,34,"GET@12-45@src\app\api\recipes\history\route.ts","src\app\api\recipes\history\route.ts","GET","GET ( request NextRequest )",12,45
+77,11,410,1,94,"POST@6-99@src\app\api\recipes\save\route.ts","src\app\api\recipes\save\route.ts","POST","POST ( request NextRequest )",6,99
+19,5,150,1,23,"GET@34-56@src\app\api\recipes\saved\route.ts","src\app\api\recipes\saved\route.ts","GET","GET ( request NextRequest )",34,56
+25,7,207,1,33,"POST@4-36@src\app\api\recipes\unsave\route.ts","src\app\api\recipes\unsave\route.ts","POST","POST ( request NextRequest )",4,36
+6,4,60,1,6,"getBearerToken@12-17@src\app\api\user\preferences\route.ts","src\app\api\user\preferences\route.ts","getBearerToken","getBearerToken ( request NextRequest )",12,17
+7,4,66,1,7,"resolveUserId@19-25@src\app\api\user\preferences\route.ts","src\app\api\user\preferences\route.ts","resolveUserId","resolveUserId ( request NextRequest )",19,25
+25,6,173,1,29,"GET@27-55@src\app\api\user\preferences\route.ts","src\app\api\user\preferences\route.ts","GET","GET ( request NextRequest )",27,55
+2,2,10,0,2,"(anonymous)@76-77@src\app\api\user\preferences\route.ts","src\app\api\user\preferences\route.ts","(anonymous)","(anonymous)",76,77
+2,2,10,0,2,"(anonymous)@79-80@src\app\api\user\preferences\route.ts","src\app\api\user\preferences\route.ts","(anonymous)","(anonymous)",79,80
+53,9,322,1,63,"POST@57-119@src\app\api\user\preferences\route.ts","src\app\api\user\preferences\route.ts","POST","POST ( request NextRequest )",57,119
+12,2,81,1,14,"GET@4-17@src\app\auth\callback\route.ts","src\app\auth\callback\route.ts","GET","GET ( request NextRequest )",4,17
+14,2,58,1,14,"formatDate@18-31@src\app\history\page.tsx","src\app\history\page.tsx","formatDate","formatDate ( iso )",18,31
+11,3,68,0,11,"init@43-53@src\app\history\page.tsx","src\app\history\page.tsx","init","init ( )",43,53
+4,1,10,0,14,"(anonymous)@42-55@src\app\history\page.tsx","src\app\history\page.tsx","(anonymous)","(anonymous)",42,55
+25,7,132,1,25,"loadHistory@57-81@src\app\history\page.tsx","src\app\history\page.tsx","loadHistory","loadHistory ( accessToken )",57,81
+8,4,41,0,9,"loadSavedRecipesLocal@83-91@src\app\history\page.tsx","src\app\history\page.tsx","loadSavedRecipesLocal","loadSavedRecipesLocal ( )",83,91
+1,1,8,0,1,"(anonymous)@94-94@src\app\history\page.tsx","src\app\history\page.tsx","(anonymous)","(anonymous)",94,94
+1,1,8,0,1,"(anonymous)@96-96@src\app\history\page.tsx","src\app\history\page.tsx","(anonymous)","(anonymous)",96,96
+2,1,2,0,3,"(anonymous)@113-115@src\app\history\page.tsx","src\app\history\page.tsx","(anonymous)","(anonymous)",113,115
+20,6,123,1,24,"handleToggleSave@93-116@src\app\history\page.tsx","src\app\history\page.tsx","handleToggleSave","handleToggleSave ( recipe Recipe )",93,116
+1,1,5,0,1,"(anonymous)@158-158@src\app\history\page.tsx","src\app\history\page.tsx","(anonymous)","(anonymous)",158,158
+17,1,42,0,18,"(anonymous)@156-173@src\app\history\page.tsx","src\app\history\page.tsx","(anonymous)","(anonymous)",156,173
+1,1,10,1,1,"(anonymous)@187-187@src\app\history\page.tsx","src\app\history\page.tsx","(anonymous)","(anonymous) ( e )",187,187
+1,1,10,0,1,"(anonymous)@199-199@src\app\history\page.tsx","src\app\history\page.tsx","(anonymous)","(anonymous)",199,199
+85,11,300,0,177,"HistoryPage@33-209@src\app\history\page.tsx","src\app\history\page.tsx","HistoryPage","HistoryPage ( )",33,209
+7,5,60,1,7,"translateAuthError@9-15@src\app\login\page.tsx","src\app\login\page.tsx","translateAuthError","translateAuthError ( message )",9,15
+12,2,74,1,15,"handleLogin@27-41@src\app\login\page.tsx","src\app\login\page.tsx","handleLogin","handleLogin ( e React FormEvent )",27,41
+62,2,162,0,113,"LoginPage@20-132@src\app\login\page.tsx","src\app\login\page.tsx","LoginPage","LoginPage ( )",20,132
+14,13,151,1,14,"translateAuthError@8-21@src\app\register\page.tsx","src\app\register\page.tsx","translateAuthError","translateAuthError ( message )",8,21
+33,7,164,1,42,"handleRegister@34-75@src\app\register\page.tsx","src\app\register\page.tsx","handleRegister","handleRegister ( e React FormEvent )",34,75
+105,3,246,0,185,"RegisterPage@26-210@src\app\register\page.tsx","src\app\register\page.tsx","RegisterPage","RegisterPage ( )",26,210
+12,3,81,0,13,"init@27-39@src\app\settings\page.tsx","src\app\settings\page.tsx","init","init ( )",27,39
+4,1,10,0,16,"(anonymous)@26-41@src\app\settings\page.tsx","src\app\settings\page.tsx","(anonymous)","(anonymous)",26,41
+23,8,140,1,23,"loadPreferences@43-65@src\app\settings\page.tsx","src\app\settings\page.tsx","loadPreferences","loadPreferences ( accessToken )",43,65
+1,1,4,0,1,"(anonymous)@68-68@src\app\settings\page.tsx","src\app\settings\page.tsx","(anonymous)","(anonymous)",68,68
+3,2,52,3,3,"toggle@67-69@src\app\settings\page.tsx","src\app\settings\page.tsx","toggle","toggle ( list , setList ( v : string [ ] ) , value )",67,69
+39,9,234,0,43,"handleSave@71-113@src\app\settings\page.tsx","src\app\settings\page.tsx","handleSave","handleSave ( )",71,113
+1,1,9,0,1,"(anonymous)@150-150@src\app\settings\page.tsx","src\app\settings\page.tsx","(anonymous)","(anonymous)",150,150
+17,1,30,0,17,"(anonymous)@143-159@src\app\settings\page.tsx","src\app\settings\page.tsx","(anonymous)","(anonymous)",143,159
+1,1,9,0,1,"(anonymous)@172-172@src\app\settings\page.tsx","src\app\settings\page.tsx","(anonymous)","(anonymous)",172,172
+17,1,30,0,17,"(anonymous)@165-181@src\app\settings\page.tsx","src\app\settings\page.tsx","(anonymous)","(anonymous)",165,181
+78,6,231,0,196,"SettingsPage@18-213@src\app\settings\page.tsx","src\app\settings\page.tsx","SettingsPage","SettingsPage ( )",18,213
+14,1,35,1,14,"RootLayout@23-36@src\app\layout.tsx","src\app\layout.tsx","RootLayout","RootLayout ( children Readonly return ( < html lang = 'lt' suppressHydrationWarning > `${fraunces.variable} ${inter.variable} antialiased` ; <body
+        className={
+      >
+        { children 
+      </body> </html> )",23,36
+1,1,7,0,1,"(anonymous)@34-34@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",34,34
+3,1,15,1,3,"handleAddIngredient@33-35@src\app\page.tsx","src\app\page.tsx","handleAddIngredient","handleAddIngredient ( ingredient )",33,35
+1,1,4,0,1,"(anonymous)@38-38@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",38,38
+1,1,10,0,1,"(anonymous)@38-38@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",38,38
+3,1,15,1,3,"handleRemoveIngredient@37-39@src\app\page.tsx","src\app\page.tsx","handleRemoveIngredient","handleRemoveIngredient ( ingredient )",37,39
+3,1,10,0,3,"handleRemoveAllIngredients@41-43@src\app\page.tsx","src\app\page.tsx","handleRemoveAllIngredients","handleRemoveAllIngredients ( )",41,43
+3,1,12,1,3,"handleEditIngredient@45-47@src\app\page.tsx","src\app\page.tsx","handleEditIngredient","handleEditIngredient ( ingredient )",45,47
+1,2,10,0,1,"(anonymous)@50-50@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",50,50
+1,1,10,0,1,"(anonymous)@50-50@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",50,50
+4,1,24,2,4,"handleReplaceIngredient@49-52@src\app\page.tsx","src\app\page.tsx","handleReplaceIngredient","handleReplaceIngredient ( oldIngredient , newIngredient )",49,52
+1,1,4,0,1,"(anonymous)@68-68@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",68,68
+6,1,21,0,6,"(anonymous)@107-112@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",107,112
+54,14,384,0,73,"handleGenerateRecipes@54-126@src\app\page.tsx","src\app\page.tsx","handleGenerateRecipes","handleGenerateRecipes ( )",54,126
+5,1,19,0,5,"handleShowSavedRecipes@128-132@src\app\page.tsx","src\app\page.tsx","handleShowSavedRecipes","handleShowSavedRecipes ( )",128,132
+22,6,108,0,22,"loadSavedRecipes@134-155@src\app\page.tsx","src\app\page.tsx","loadSavedRecipes","loadSavedRecipes ( )",134,155
+1,1,8,0,1,"(anonymous)@158-158@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",158,158
+1,1,8,0,1,"(anonymous)@160-160@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",160,160
+28,4,166,1,28,"handleToggleSave@157-184@src\app\page.tsx","src\app\page.tsx","handleToggleSave","handleToggleSave ( recipe Recipe )",157,184
+22,8,134,1,24,"loadPreferences@186-209@src\app\page.tsx","src\app\page.tsx","loadPreferences","loadPreferences ( accessToken )",186,209
+9,3,46,0,9,"(anonymous)@212-220@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",212,220
+3,1,21,0,11,"(anonymous)@211-221@src\app\page.tsx","src\app\page.tsx","(anonymous)","(anonymous)",211,221
+4,1,20,0,4,"handleLogout@223-226@src\app\page.tsx","src\app\page.tsx","handleLogout","handleLogout ( )",223,226
+246,18,675,0,436,"Home@19-454@src\app\page.tsx","src\app\page.tsx","Home","Home ( )",19,454
+19,6,131,0,21,"(anonymous)@34-54@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",34,54
+1,1,4,0,1,"(anonymous)@60-60@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",60,60
+1,1,10,0,1,"(anonymous)@61-61@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",61,61
+2,1,8,0,2,"(anonymous)@63-64@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",63,64
+15,3,86,0,16,"(anonymous)@57-72@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",57,72
+10,5,52,1,10,"handleClickOutside@76-85@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","handleClickOutside","handleClickOutside ( e MouseEvent )",76,85
+1,1,9,0,1,"(anonymous)@87-87@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",87,87
+5,1,19,0,14,"(anonymous)@75-88@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",75,88
+6,1,28,1,6,"handleSelectIngredient@91-96@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","handleSelectIngredient","handleSelectIngredient ( ingredient )",91,96
+2,2,16,0,2,"(anonymous)@102-103@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",102,103
+21,6,105,0,26,"handleAdd@98-123@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","handleAdd","handleAdd ( )",98,123
+5,1,29,1,5,"handleInputChange@125-129@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","handleInputChange","handleInputChange ( e React ChangeEvent )",125,129
+1,1,1,0,1,"(anonymous)@144-144@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",144,144
+1,1,1,0,1,"(anonymous)@149-149@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",149,149
+24,12,160,1,25,"handleKeyDown@132-156@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","handleKeyDown","handleKeyDown ( e React KeyboardEvent )",132,156
+27,4,204,1,146,"IngredientInput@14-159@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","IngredientInput","IngredientInput ( onAdd addedIngredients [ ] , editingIngredient null , onReplace IngredientInputProps )",14,159
+6,3,40,0,6,"(anonymous)@162-167@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",162,167
+4,1,17,1,4,"(anonymous)@228-231@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous) ( e )",228,231
+17,1,42,0,20,"(anonymous)@218-237@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous)",218,237
+1,3,26,1,1,"(anonymous)@249-249@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous) ( e )",249,249
+4,4,42,1,4,"(anonymous)@249-252@src\components\IngredientInput.tsx","src\components\IngredientInput.tsx","(anonymous)","(anonymous) ( e )",249,252
+1,1,5,0,1,"(anonymous)@41-41@src\components\IngredientList.tsx","src\components\IngredientList.tsx","(anonymous)","(anonymous)",41,41
+1,1,5,0,1,"(anonymous)@47-47@src\components\IngredientList.tsx","src\components\IngredientList.tsx","(anonymous)","(anonymous)",47,47
+22,1,58,0,22,"(anonymous)@36-57@src\components\IngredientList.tsx","src\components\IngredientList.tsx","(anonymous)","(anonymous)",36,57
+27,2,60,1,49,"IngredientList@12-60@src\components\IngredientList.tsx","src\components\IngredientList.tsx","IngredientList","IngredientList ( ingredients onRemove onRemoveAll onEdit IngredientListProps )",12,60
+1,1,7,0,1,"(anonymous)@20-20@src\components\RecipeCard.tsx","src\components\RecipeCard.tsx","(anonymous)","(anonymous)",20,20
+7,3,31,0,7,"(anonymous)@17-23@src\components\RecipeCard.tsx","src\components\RecipeCard.tsx","(anonymous)","(anonymous)",17,23
+1,1,2,0,1,"(anonymous)@31-31@src\components\RecipeCard.tsx","src\components\RecipeCard.tsx","(anonymous)","(anonymous)",31,31
+1,1,7,0,1,"(anonymous)@37-37@src\components\RecipeCard.tsx","src\components\RecipeCard.tsx","(anonymous)","(anonymous)",37,37
+1,1,7,0,1,"(anonymous)@41-41@src\components\RecipeCard.tsx","src\components\RecipeCard.tsx","(anonymous)","(anonymous)",41,41
+17,3,90,0,19,"handleCopyShoppingList@25-43@src\components\RecipeCard.tsx","src\components\RecipeCard.tsx","handleCopyShoppingList","handleCopyShoppingList ( )",25,43
+104,6,345,1,136,"RecipeCard@13-148@src\components\RecipeCard.tsx","src\components\RecipeCard.tsx","RecipeCard","RecipeCard ( recipe isSaved onToggleSave RecipeCardProps )",13,148
+1,1,1,0,1,"(anonymous)@114-114@src\data\ingredients.ts","src\data\ingredients.ts","(anonymous)","(anonymous)",114,114
+7,2,57,1,9,"filterIngredients@108-116@src\data\ingredients.ts","src\data\ingredients.ts","filterIngredients","filterIngredients ( query )",108,116
+2,1,19,1,2,"isValidAllergy@23-24@src\data\preferences.ts","src\data\preferences.ts","isValidAllergy","isValidAllergy ( value )",23,24
+2,1,19,1,2,"isValidDiet@27-28@src\data\preferences.ts","src\data\preferences.ts","isValidDiet","isValidDiet ( value )",27,28
+40,8,255,3,49,"generateRecipes@31-79@src\lib\generateRecipes.ts","src\lib\generateRecipes.ts","generateRecipes","generateRecipes ( ingredients , excludeTitles [ ] , preferences UserPreferences EMPTY_PREFERENCES )",31,79
+8,5,81,1,8,"resolveUserIdFromBearer@12-19@src\lib\recipeHistory.ts","src\lib\recipeHistory.ts","resolveUserIdFromBearer","resolveUserIdFromBearer ( authorizationHeader null )",12,19
+5,1,19,0,5,"(anonymous)@24-28@src\lib\recipeHistory.ts","src\lib\recipeHistory.ts","(anonymous)","(anonymous)",24,28
+1,1,4,0,1,"(anonymous)@50-50@src\lib\recipeHistory.ts","src\lib\recipeHistory.ts","(anonymous)","(anonymous)",50,50
+27,8,212,2,39,"saveRecipesToHistory@21-59@src\lib\recipeHistory.ts","src\lib\recipeHistory.ts","saveRecipesToHistory","saveRecipesToHistory ( userId , recipes Recipe )",21,59

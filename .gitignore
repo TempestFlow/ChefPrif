@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# kokybės analizės HTML ataskaitos (generuojamos)
+/quality/reports/html/

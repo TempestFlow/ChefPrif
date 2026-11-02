@@ -1,0 +1,1770 @@
+{
+  "generatedAt": "2026-11-02T13:49:50.673Z",
+  "tools": {
+    "node": "v24.20.0",
+    "eslint": "9.39.4",
+    "typescript": "5.9.3",
+    "jest": "30.3.0",
+    "fta": "3.1.0",
+    "jscpd": "4.3.0",
+    "lizard": "1.24.3"
+  },
+  "steps": {
+    "lizard": "ok",
+    "fta": "ok",
+    "jscpd": "ok",
+    "jest": "ok",
+    "eslint": "ok",
+    "tsc": "ok",
+    "npmAudit": "ok"
+  },
+  "project": {
+    "commit": "d000a27ab2bb4629ad23512d0b53bd6089f0bc43",
+    "commitDate": "2026-06-02",
+    "branch": "develop"
+  },
+  "size": {
+    "prodFiles": 24,
+    "testFiles": 14,
+    "prodLines": 2612,
+    "testLines": 2342,
+    "nloc": 2244,
+    "functions": 111,
+    "avgFunctionNloc": 16.4
+  },
+  "complexity": {
+    "limit": 10,
+    "avgCcn": 3.2,
+    "maxCcn": 18,
+    "overLimitLizard": 7,
+    "overLimitEslint": 8,
+    "buckets": {
+      "1–5": 88,
+      "6–10": 16,
+      "11–20": 7,
+      "21+": 0
+    },
+    "overLimit": [
+      {
+        "name": "Home",
+        "file": "src/app/page.tsx",
+        "line": 19,
+        "nloc": 246,
+        "length": 436,
+        "lizard": 18,
+        "eslint": 30
+      },
+      {
+        "name": "handleGenerateRecipes",
+        "file": "src/app/page.tsx",
+        "line": 54,
+        "nloc": 54,
+        "length": 73,
+        "lizard": 14,
+        "eslint": 15
+      },
+      {
+        "name": "POST",
+        "file": "src/app/api/generate-recipe/route.ts",
+        "line": 8,
+        "nloc": 55,
+        "length": 68,
+        "lizard": 14,
+        "eslint": 14
+      },
+      {
+        "name": "translateAuthError",
+        "file": "src/app/register/page.tsx",
+        "line": 8,
+        "nloc": 14,
+        "length": 14,
+        "lizard": 13,
+        "eslint": 13
+      },
+      {
+        "name": "handleKeyDown",
+        "file": "src/components/IngredientInput.tsx",
+        "line": 132,
+        "nloc": 24,
+        "length": 25,
+        "lizard": 12,
+        "eslint": 11
+      },
+      {
+        "name": "POST",
+        "file": "src/app/api/recipes/save/route.ts",
+        "line": 6,
+        "nloc": 77,
+        "length": 94,
+        "lizard": 11,
+        "eslint": 11
+      },
+      {
+        "name": "HistoryPage",
+        "file": "src/app/history/page.tsx",
+        "line": 33,
+        "nloc": 85,
+        "length": 177,
+        "lizard": 11,
+        "eslint": 11
+      },
+      {
+        "name": "IngredientInput",
+        "file": "src/components/IngredientInput.tsx",
+        "line": 14,
+        "nloc": 27,
+        "length": 146,
+        "lizard": 4,
+        "eslint": 11
+      }
+    ]
+  },
+  "files": [
+    {
+      "file": "src/app/page.tsx",
+      "lines": 473,
+      "blank": 38,
+      "nloc": 416,
+      "functions": 23,
+      "maxCcn": 18,
+      "maxCcnEslint": 30,
+      "avgCcn": 3.1,
+      "ftaLoc": 431,
+      "cyclo": 57,
+      "halstead": {
+        "n1": 31,
+        "n2": 148,
+        "N1": 544,
+        "N2": 526,
+        "length": 1070,
+        "vocabulary": 179,
+        "volume": 8007.682881672755,
+        "difficulty": 53.310810810810814,
+        "effort": 426896.0671378246,
+        "time": 23716.44817432359,
+        "bugs": 2.6692276272242514
+      },
+      "mi": 7.532534500709993,
+      "ftaScore": 67.67483191595852,
+      "ftaAssessment": "Needs improvement",
+      "coverage": {
+        "statements": 61.02,
+        "branches": 56.7,
+        "functions": 40,
+        "lines": 64.8
+      },
+      "eslintIssues": 2
+    },
+    {
+      "file": "src/components/IngredientInput.tsx",
+      "lines": 321,
+      "blank": 28,
+      "nloc": 280,
+      "functions": 21,
+      "maxCcn": 12,
+      "maxCcnEslint": 11,
+      "avgCcn": 2.8,
+      "ftaLoc": 287,
+      "cyclo": 44,
+      "halstead": {
+        "n1": 28,
+        "n2": 102,
+        "N1": 385,
+        "N2": 397,
+        "length": 782,
+        "vocabulary": 130,
+        "volume": 5491.491629788251,
+        "difficulty": 54.490196078431374,
+        "effort": 299232.4556702265,
+        "time": 16624.025315012583,
+        "bugs": 1.830497209929417
+      },
+      "mi": 14.280363204804893,
+      "ftaScore": 61.72825523453877,
+      "ftaAssessment": "Needs improvement",
+      "coverage": {
+        "statements": 63.63,
+        "branches": 47.05,
+        "functions": 82.6,
+        "lines": 63.46
+      },
+      "eslintIssues": 3
+    },
+    {
+      "file": "src/app/settings/page.tsx",
+      "lines": 222,
+      "blank": 17,
+      "nloc": 198,
+      "functions": 11,
+      "maxCcn": 9,
+      "maxCcnEslint": null,
+      "avgCcn": 3.1,
+      "ftaLoc": 203,
+      "cyclo": 24,
+      "halstead": {
+        "n1": 25,
+        "n2": 83,
+        "N1": 273,
+        "N2": 255,
+        "length": 528,
+        "vocabulary": 108,
+        "volume": 3566.580601142311,
+        "difficulty": 36.86746987951807,
+        "effort": 131490.8028854876,
+        "time": 7305.044604749311,
+        "bugs": 1.1888602003807704
+      },
+      "mi": 21.563378721917893,
+      "ftaScore": 56.84763820920283,
+      "ftaAssessment": "Could be better",
+      "coverage": {
+        "statements": 65.67,
+        "branches": 44.44,
+        "functions": 100,
+        "lines": 66.15
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/history/page.tsx",
+      "lines": 213,
+      "blank": 16,
+      "nloc": 194,
+      "functions": 14,
+      "maxCcn": 11,
+      "maxCcnEslint": 11,
+      "avgCcn": 2.9,
+      "ftaLoc": 194,
+      "cyclo": 27,
+      "halstead": {
+        "n1": 25,
+        "n2": 75,
+        "N1": 256,
+        "N2": 221,
+        "length": 477,
+        "vocabulary": 100,
+        "volume": 3169.1194025225436,
+        "difficulty": 35.36,
+        "effort": 112060.06207319714,
+        "time": 6225.559004066508,
+        "bugs": 1.056373134174181
+      },
+      "mi": 21.948778262765476,
+      "ftaScore": 56.24274459657902,
+      "ftaAssessment": "Could be better",
+      "coverage": {
+        "statements": 62.31,
+        "branches": 55.88,
+        "functions": 58.82,
+        "lines": 65.15
+      },
+      "eslintIssues": 2
+    },
+    {
+      "file": "src/app/register/page.tsx",
+      "lines": 219,
+      "blank": 22,
+      "nloc": 189,
+      "functions": 3,
+      "maxCcn": 13,
+      "maxCcnEslint": 13,
+      "avgCcn": 7.7,
+      "ftaLoc": 197,
+      "cyclo": 23,
+      "halstead": {
+        "n1": 22,
+        "n2": 74,
+        "N1": 163,
+        "N2": 200,
+        "length": 363,
+        "vocabulary": 96,
+        "volume": 2390.3413877617795,
+        "difficulty": 29.72972972972973,
+        "effort": 71064.2034199448,
+        "time": 3948.0113011080443,
+        "bugs": 0.7967804625872599
+      },
+      "mi": 23.19900814358081,
+      "ftaScore": 56.198458911820374,
+      "ftaAssessment": "Could be better",
+      "coverage": {
+        "statements": 79.68,
+        "branches": 74.41,
+        "functions": 100,
+        "lines": 92.45
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/components/RecipeCard.tsx",
+      "lines": 154,
+      "blank": 13,
+      "nloc": 135,
+      "functions": 7,
+      "maxCcn": 6,
+      "maxCcnEslint": null,
+      "avgCcn": 2.3,
+      "ftaLoc": 141,
+      "cyclo": 11,
+      "halstead": {
+        "n1": 20,
+        "n2": 58,
+        "N1": 108,
+        "N2": 164,
+        "length": 272,
+        "vocabulary": 78,
+        "volume": 1709.6294035305316,
+        "difficulty": 28.275862068965516,
+        "effort": 48341.245203277096,
+        "time": 2685.6247335153944,
+        "bugs": 0.5698764678435105
+      },
+      "mi": 29.000657240147188,
+      "ftaScore": 53.32538930967747,
+      "ftaAssessment": "Could be better",
+      "coverage": {
+        "statements": 73.07,
+        "branches": 87.5,
+        "functions": 66.66,
+        "lines": 82.6
+      },
+      "eslintIssues": 1
+    },
+    {
+      "file": "src/app/login/page.tsx",
+      "lines": 138,
+      "blank": 14,
+      "nloc": 119,
+      "functions": 3,
+      "maxCcn": 5,
+      "maxCcnEslint": null,
+      "avgCcn": 3,
+      "ftaLoc": 124,
+      "cyclo": 9,
+      "halstead": {
+        "n1": 16,
+        "n2": 52,
+        "N1": 89,
+        "N2": 121,
+        "length": 210,
+        "vocabulary": 68,
+        "volume": 1278.3671966625711,
+        "difficulty": 18.615384615384617,
+        "effort": 23797.29704556479,
+        "time": 1322.0720580869327,
+        "bugs": 0.42612239888752373
+      },
+      "mi": 31.37080484163399,
+      "ftaScore": 52.2499662557051,
+      "ftaAssessment": "Could be better",
+      "coverage": {
+        "statements": 93.75,
+        "branches": 86.66,
+        "functions": 100,
+        "lines": 100
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/api/user/preferences/route.ts",
+      "lines": 119,
+      "blank": 17,
+      "nloc": 101,
+      "functions": 6,
+      "maxCcn": 9,
+      "maxCcnEslint": null,
+      "avgCcn": 4.5,
+      "ftaLoc": 101,
+      "cyclo": 23,
+      "halstead": {
+        "n1": 26,
+        "n2": 49,
+        "N1": 230,
+        "N2": 145,
+        "length": 375,
+        "vocabulary": 75,
+        "volume": 2335.8070089359553,
+        "difficulty": 38.46938775510204,
+        "effort": 89857.06554784236,
+        "time": 4992.059197102353,
+        "bugs": 0.778602336311985
+      },
+      "mi": 29.598398514493805,
+      "ftaScore": 49.11856391885492,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/data/ingredients.ts",
+      "lines": 116,
+      "blank": 11,
+      "nloc": 89,
+      "functions": 2,
+      "maxCcn": 2,
+      "maxCcnEslint": null,
+      "avgCcn": 1.5,
+      "ftaLoc": 89,
+      "cyclo": 2,
+      "halstead": {
+        "n1": 8,
+        "n2": 86,
+        "N1": 21,
+        "N2": 91,
+        "length": 112,
+        "vocabulary": 94,
+        "volume": 734.1139513878954,
+        "difficulty": 4.232558139534884,
+        "effort": 3107.179980292953,
+        "time": 172.62111001627517,
+        "bugs": 0.24470465046263182
+      },
+      "mi": 37.140957098926805,
+      "ftaScore": 14.084873022107615,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/api/recipes/save/route.ts",
+      "lines": 99,
+      "blank": 11,
+      "nloc": 80,
+      "functions": 1,
+      "maxCcn": 11,
+      "maxCcnEslint": 11,
+      "avgCcn": 11,
+      "ftaLoc": 80,
+      "cyclo": 11,
+      "halstead": {
+        "n1": 14,
+        "n2": 36,
+        "N1": 132,
+        "N2": 82,
+        "length": 214,
+        "vocabulary": 50,
+        "volume": 1207.785224611791,
+        "difficulty": 15.944444444444445,
+        "effort": 19257.464414643557,
+        "time": 1069.8591341468643,
+        "bugs": 0.402595074870597
+      },
+      "mi": 35.42639880826019,
+      "ftaScore": 46.6040764365962,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 83.33,
+        "branches": 94.11,
+        "functions": 100,
+        "lines": 83.33
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/lib/generateRecipes.ts",
+      "lines": 79,
+      "blank": 13,
+      "nloc": 68,
+      "functions": 1,
+      "maxCcn": 8,
+      "maxCcnEslint": null,
+      "avgCcn": 8,
+      "ftaLoc": 66,
+      "cyclo": 6,
+      "halstead": {
+        "n1": 18,
+        "n2": 33,
+        "N1": 97,
+        "N2": 64,
+        "length": 161,
+        "vocabulary": 51,
+        "volume": 913.2604800574107,
+        "difficulty": 17.454545454545453,
+        "effort": 15940.546561002076,
+        "time": 885.585920055671,
+        "bugs": 0.3044201600191369
+      },
+      "mi": 38.771393710571644,
+      "ftaScore": 46.92987789609094,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 100,
+        "branches": 75,
+        "functions": 100,
+        "lines": 100
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/api/generate-recipe/route.ts",
+      "lines": 75,
+      "blank": 10,
+      "nloc": 59,
+      "functions": 3,
+      "maxCcn": 14,
+      "maxCcnEslint": 14,
+      "avgCcn": 5.3,
+      "ftaLoc": 59,
+      "cyclo": 14,
+      "halstead": {
+        "n1": 19,
+        "n2": 35,
+        "N1": 117,
+        "N2": 80,
+        "length": 197,
+        "vocabulary": 54,
+        "volume": 1133.7128379262033,
+        "difficulty": 20.571428571428573,
+        "effort": 23322.09266591047,
+        "time": 1295.6718147728038,
+        "bugs": 0.37790427930873444
+      },
+      "mi": 38.09998634489063,
+      "ftaScore": 43.449117413282785,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/components/IngredientList.tsx",
+      "lines": 62,
+      "blank": 4,
+      "nloc": 56,
+      "functions": 4,
+      "maxCcn": 2,
+      "maxCcnEslint": null,
+      "avgCcn": 1.2,
+      "ftaLoc": 58,
+      "cyclo": 2,
+      "halstead": {
+        "n1": 12,
+        "n2": 18,
+        "N1": 26,
+        "N2": 47,
+        "length": 73,
+        "vocabulary": 30,
+        "volume": 358.2030134794219,
+        "difficulty": 15.666666666666666,
+        "effort": 5611.847211177609,
+        "time": 311.7692895098672,
+        "bugs": 0.11940100449314063
+      },
+      "mi": 43.379592828364736,
+      "ftaScore": 10.611828295113,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 83.33,
+        "branches": 100,
+        "functions": 75,
+        "lines": 83.33
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/api/recipes/saved/route.ts",
+      "lines": 56,
+      "blank": 5,
+      "nloc": 50,
+      "functions": 1,
+      "maxCcn": 5,
+      "maxCcnEslint": null,
+      "avgCcn": 5,
+      "ftaLoc": 50,
+      "cyclo": 5,
+      "halstead": {
+        "n1": 13,
+        "n2": 46,
+        "N1": 65,
+        "N2": 60,
+        "length": 125,
+        "vocabulary": 59,
+        "volume": 735.3303811702302,
+        "difficulty": 7.826086956521739,
+        "effort": 5754.759504810498,
+        "time": 319.708861378361,
+        "bugs": 0.2451101270567434
+      },
+      "mi": 42.195066579376736,
+      "ftaScore": 45.624930100553534,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      },
+      "eslintIssues": 1
+    },
+    {
+      "file": "src/lib/recipeHistory.ts",
+      "lines": 59,
+      "blank": 10,
+      "nloc": 46,
+      "functions": 4,
+      "maxCcn": 8,
+      "maxCcnEslint": null,
+      "avgCcn": 3.8,
+      "ftaLoc": 46,
+      "cyclo": 14,
+      "halstead": {
+        "n1": 19,
+        "n2": 36,
+        "N1": 115,
+        "N2": 78,
+        "length": 193,
+        "vocabulary": 55,
+        "volume": 1115.8024247102594,
+        "difficulty": 19.5,
+        "effort": 21758.14728185006,
+        "time": 1208.785960102781,
+        "bugs": 0.3719341415700865
+      },
+      "mi": 40.50637316771422,
+      "ftaScore": 41.14695340914554,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/api/recipes/history/route.ts",
+      "lines": 45,
+      "blank": 7,
+      "nloc": 37,
+      "functions": 2,
+      "maxCcn": 4,
+      "maxCcnEslint": null,
+      "avgCcn": 2.5,
+      "ftaLoc": 37,
+      "cyclo": 6,
+      "halstead": {
+        "n1": 17,
+        "n2": 29,
+        "N1": 87,
+        "N2": 50,
+        "length": 137,
+        "vocabulary": 46,
+        "volume": 756.7279879798108,
+        "difficulty": 13.793103448275861,
+        "effort": 10437.627420411183,
+        "time": 579.8681900228435,
+        "bugs": 0.25224266265993694
+      },
+      "mi": 44.82591213078881,
+      "ftaScore": 41.13333130871382,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/layout.tsx",
+      "lines": 37,
+      "blank": 4,
+      "nloc": 32,
+      "functions": 1,
+      "maxCcn": 1,
+      "maxCcnEslint": null,
+      "avgCcn": 1,
+      "ftaLoc": 33,
+      "cyclo": 1,
+      "halstead": {
+        "n1": 12,
+        "n2": 21,
+        "N1": 30,
+        "N2": 31,
+        "length": 61,
+        "vocabulary": 33,
+        "volume": 307.70804128086564,
+        "difficulty": 8.857142857142858,
+        "effort": 2725.4140799162387,
+        "time": 151.41189332867992,
+        "bugs": 0.10256934709362188
+      },
+      "mi": 49.31870768635312,
+      "ftaScore": 10.767157496857138,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 100,
+        "functions": 0,
+        "lines": 0
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/api/recipes/unsave/route.ts",
+      "lines": 36,
+      "blank": 7,
+      "nloc": 27,
+      "functions": 1,
+      "maxCcn": 7,
+      "maxCcnEslint": null,
+      "avgCcn": 7,
+      "ftaLoc": 27,
+      "cyclo": 7,
+      "halstead": {
+        "n1": 13,
+        "n2": 25,
+        "N1": 69,
+        "N2": 44,
+        "length": 113,
+        "vocabulary": 38,
+        "volume": 593.0158090191251,
+        "difficulty": 10.56,
+        "effort": 6262.246943241961,
+        "time": 347.90260795788674,
+        "bugs": 0.19767193633970837
+      },
+      "mi": 48.41771536196142,
+      "ftaScore": 36.91998966577735,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/data/preferences.ts",
+      "lines": 29,
+      "blank": 5,
+      "nloc": 22,
+      "functions": 2,
+      "maxCcn": 1,
+      "maxCcnEslint": null,
+      "avgCcn": 1,
+      "ftaLoc": 22,
+      "cyclo": 1,
+      "halstead": {
+        "n1": 11,
+        "n2": 17,
+        "N1": 26,
+        "N2": 28,
+        "length": 54,
+        "vocabulary": 28,
+        "volume": 259.5971657911106,
+        "difficulty": 8.235294117647058,
+        "effort": 2137.8590123973813,
+        "time": 118.76994513318785,
+        "bugs": 0.08653238859703688
+      },
+      "mi": 53.67697702123281,
+      "ftaScore": 10.267522487082474,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 50,
+        "branches": 100,
+        "functions": 0,
+        "lines": 33.33
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/app/auth/callback/route.ts",
+      "lines": 17,
+      "blank": 3,
+      "nloc": 14,
+      "functions": 1,
+      "maxCcn": 2,
+      "maxCcnEslint": null,
+      "avgCcn": 2,
+      "ftaLoc": 14,
+      "cyclo": 2,
+      "halstead": {
+        "n1": 13,
+        "n2": 11,
+        "N1": 32,
+        "N2": 21,
+        "length": 53,
+        "vocabulary": 24,
+        "volume": 243.00301253822127,
+        "difficulty": 11.454545454545455,
+        "effort": 2783.4890527105345,
+        "time": 154.6382807061408,
+        "bugs": 0.08100100417940709
+      },
+      "mi": 58.02531420434097,
+      "ftaScore": 9.933263109830023,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/lib/supabase.ts",
+      "lines": 12,
+      "blank": 3,
+      "nloc": 8,
+      "functions": 0,
+      "maxCcn": null,
+      "maxCcnEslint": null,
+      "avgCcn": 0,
+      "ftaLoc": 8,
+      "cyclo": 4,
+      "halstead": {
+        "n1": 7,
+        "n2": 9,
+        "N1": 17,
+        "N2": 16,
+        "length": 33,
+        "vocabulary": 16,
+        "volume": 132,
+        "difficulty": 5.333333333333333,
+        "effort": 704,
+        "time": 39.111111111111114,
+        "bugs": 0.044
+      },
+      "mi": 64.91372925575295,
+      "ftaScore": 25.57481831532867,
+      "ftaAssessment": "OK",
+      "coverage": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 100,
+        "lines": 0
+      },
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/types/preferences.ts",
+      "lines": 11,
+      "blank": 2,
+      "nloc": 8,
+      "functions": 0,
+      "maxCcn": null,
+      "maxCcnEslint": null,
+      "avgCcn": 0,
+      "ftaLoc": 8,
+      "cyclo": 1,
+      "halstead": {
+        "n1": 2,
+        "n2": 4,
+        "N1": 4,
+        "N2": 4,
+        "length": 8,
+        "vocabulary": 6,
+        "volume": 20.67970000576925,
+        "difficulty": 1,
+        "effort": 20.67970000576925,
+        "time": 1.1488722225427361,
+        "bugs": 0.006893233335256416
+      },
+      "mi": 70.95406655026727,
+      "ftaScore": 5.583128210518055,
+      "ftaAssessment": "OK",
+      "coverage": null,
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/types/recipe.ts",
+      "lines": 9,
+      "blank": 0,
+      "nloc": 8,
+      "functions": 0,
+      "maxCcn": null,
+      "maxCcnEslint": null,
+      "avgCcn": 0,
+      "ftaLoc": 8,
+      "cyclo": 1,
+      "halstead": {
+        "n1": 1,
+        "n2": 7,
+        "N1": 1,
+        "N2": 7,
+        "length": 8,
+        "vocabulary": 8,
+        "volume": 24,
+        "difficulty": 0,
+        "effort": 0,
+        "time": 0,
+        "bugs": 0.008
+      },
+      "mi": 70.50126731402183,
+      "ftaScore": 6.457950886979617,
+      "ftaAssessment": "OK",
+      "coverage": null,
+      "eslintIssues": 0
+    },
+    {
+      "file": "src/types/recipeHistory.ts",
+      "lines": 11,
+      "blank": 2,
+      "nloc": 8,
+      "functions": 0,
+      "maxCcn": null,
+      "maxCcnEslint": null,
+      "avgCcn": 0,
+      "ftaLoc": 8,
+      "cyclo": 1,
+      "halstead": {
+        "n1": 3,
+        "n2": 8,
+        "N1": 4,
+        "N2": 9,
+        "length": 13,
+        "vocabulary": 11,
+        "volume": 44.97261104228487,
+        "difficulty": 1.125,
+        "effort": 50.59418742257048,
+        "time": 2.8107881901428042,
+        "bugs": 0.01499087034742829
+      },
+      "mi": 68.59156022675955,
+      "ftaScore": 7.426348197983344,
+      "ftaAssessment": "OK",
+      "coverage": null,
+      "eslintIssues": 0
+    }
+  ],
+  "duplication": {
+    "clones": 6,
+    "jscpdDuplicatedLines": 153,
+    "jscpdTotalLines": 3351,
+    "jscpdPercentage": 4.57,
+    "uniqueLines": 242,
+    "prodLines": 2612,
+    "uniquePercentage": 9.264931087289433,
+    "perFile": {
+      "src/app/login/page.tsx": 83,
+      "src/app/register/page.tsx": 102,
+      "src/app/history/page.tsx": 28,
+      "src/app/settings/page.tsx": 29
+    },
+    "list": [
+      {
+        "format": "javascript",
+        "lines": 47,
+        "tokens": 263,
+        "a": "src/app/login/page.tsx:62–108",
+        "b": "src/app/register/page.tsx:124–177"
+      },
+      {
+        "format": "tsx",
+        "lines": 18,
+        "tokens": 123,
+        "a": "src/app/login/page.tsx:40–57",
+        "b": "src/app/register/page.tsx:102–119"
+      },
+      {
+        "format": "tsx",
+        "lines": 38,
+        "tokens": 198,
+        "a": "src/app/login/page.tsx:58–95",
+        "b": "src/app/register/page.tsx:120–157"
+      },
+      {
+        "format": "tsx",
+        "lines": 28,
+        "tokens": 167,
+        "a": "src/app/login/page.tsx:95–122",
+        "b": "src/app/register/page.tsx:176–203"
+      },
+      {
+        "format": "tsx",
+        "lines": 11,
+        "tokens": 104,
+        "a": "src/app/history/page.tsx:40–50",
+        "b": "src/app/settings/page.tsx:24–35"
+      },
+      {
+        "format": "tsx",
+        "lines": 17,
+        "tokens": 112,
+        "a": "src/app/history/page.tsx:125–141",
+        "b": "src/app/settings/page.tsx:122–138"
+      }
+    ]
+  },
+  "tests": {
+    "suites": 14,
+    "tests": 118,
+    "passed": 118,
+    "failed": 0
+  },
+  "coverage": {
+    "allFiles": {
+      "statements": 52.46,
+      "branches": 45.22,
+      "functions": 58.46,
+      "lines": 54.68,
+      "files": 21
+    },
+    "defaultConfig": {
+      "statements": 69.7,
+      "branches": 60.72,
+      "functions": 68.46,
+      "lines": 72.57,
+      "files": 14
+    },
+    "collectFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/__tests__/**",
+      "!src/types/**"
+    ],
+    "businessLogic": {
+      "scope": [
+        "src/app/api/",
+        "src/data/"
+      ],
+      "files": 8,
+      "statements": 19.047619047619047,
+      "branches": 16.513761467889907,
+      "functions": 16.666666666666668,
+      "lines": 17.5
+    },
+    "zeroCoverage": [
+      "src/app/layout.tsx",
+      "src/app/api/generate-recipe/route.ts",
+      "src/app/api/recipes/history/route.ts",
+      "src/app/api/recipes/saved/route.ts",
+      "src/app/api/recipes/unsave/route.ts",
+      "src/app/api/user/preferences/route.ts",
+      "src/app/auth/callback/route.ts",
+      "src/lib/recipeHistory.ts",
+      "src/lib/supabase.ts"
+    ]
+  },
+  "eslint": {
+    "errors": 14,
+    "warnings": 5,
+    "byArea": [
+      {
+        "area": "produkcinis",
+        "count": 9
+      },
+      {
+        "area": "testai",
+        "count": 9
+      },
+      {
+        "area": "kita",
+        "count": 1
+      }
+    ],
+    "complexityWarnings": 8,
+    "byRule": [
+      {
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": "klaida",
+        "produkcinis": 0,
+        "testai": 7,
+        "kita": 0
+      },
+      {
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": "įspėjimas",
+        "produkcinis": 2,
+        "testai": 1,
+        "kita": 0
+      },
+      {
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": "klaida",
+        "produkcinis": 3,
+        "testai": 0,
+        "kita": 0
+      },
+      {
+        "rule": "@typescript-eslint/no-require-imports",
+        "severity": "klaida",
+        "produkcinis": 0,
+        "testai": 1,
+        "kita": 1
+      },
+      {
+        "rule": "react-hooks/immutability",
+        "severity": "klaida",
+        "produkcinis": 2,
+        "testai": 0,
+        "kita": 0
+      },
+      {
+        "rule": "react-hooks/exhaustive-deps",
+        "severity": "įspėjimas",
+        "produkcinis": 1,
+        "testai": 0,
+        "kita": 0
+      },
+      {
+        "rule": "jsx-a11y/role-has-required-aria-props",
+        "severity": "įspėjimas",
+        "produkcinis": 1,
+        "testai": 0,
+        "kita": 0
+      }
+    ],
+    "messages": [
+      {
+        "file": "jest.config.js",
+        "area": "kita",
+        "rule": "@typescript-eslint/no-require-imports",
+        "severity": "klaida",
+        "line": 1,
+        "message": "A `require()` style import is forbidden."
+      },
+      {
+        "file": "src/__tests__/HomePage.test.tsx",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": "įspėjimas",
+        "line": 2,
+        "message": "'useRouter' is defined but never used."
+      },
+      {
+        "file": "src/__tests__/HomePage.test.tsx",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-require-imports",
+        "severity": "klaida",
+        "line": 34,
+        "message": "A `require()` style import is forbidden."
+      },
+      {
+        "file": "src/__tests__/save-recipe.test.ts",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": "klaida",
+        "line": 74,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "file": "src/__tests__/save-recipe.test.ts",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": "klaida",
+        "line": 75,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "file": "src/__tests__/save-recipe.test.ts",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": "klaida",
+        "line": 95,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "file": "src/__tests__/save-recipe.test.ts",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": "klaida",
+        "line": 133,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "file": "src/__tests__/save-recipe.test.ts",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": "klaida",
+        "line": 134,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "file": "src/__tests__/save-recipe.test.ts",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": "klaida",
+        "line": 174,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "file": "src/__tests__/save-recipe.test.ts",
+        "area": "testai",
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": "klaida",
+        "line": 175,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "file": "src/app/api/recipes/saved/route.ts",
+        "area": "produkcinis",
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": "įspėjimas",
+        "line": 34,
+        "message": "'request' is defined but never used."
+      },
+      {
+        "file": "src/app/history/page.tsx",
+        "area": "produkcinis",
+        "rule": "react-hooks/immutability",
+        "severity": "klaida",
+        "line": 50,
+        "message": "Cannot access variable before it is declared"
+      },
+      {
+        "file": "src/app/history/page.tsx",
+        "area": "produkcinis",
+        "rule": "react-hooks/immutability",
+        "severity": "klaida",
+        "line": 51,
+        "message": "Cannot access variable before it is declared"
+      },
+      {
+        "file": "src/app/page.tsx",
+        "area": "produkcinis",
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": "įspėjimas",
+        "line": 151,
+        "message": "'err' is defined but never used."
+      },
+      {
+        "file": "src/app/page.tsx",
+        "area": "produkcinis",
+        "rule": "react-hooks/exhaustive-deps",
+        "severity": "įspėjimas",
+        "line": 221,
+        "message": "React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array."
+      },
+      {
+        "file": "src/components/IngredientInput.tsx",
+        "area": "produkcinis",
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": "klaida",
+        "line": 40,
+        "message": "Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "file": "src/components/IngredientInput.tsx",
+        "area": "produkcinis",
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": "klaida",
+        "line": 65,
+        "message": "Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "file": "src/components/IngredientInput.tsx",
+        "area": "produkcinis",
+        "rule": "jsx-a11y/role-has-required-aria-props",
+        "severity": "įspėjimas",
+        "line": 210,
+        "message": "Elements with the ARIA role \"combobox\" must have the following attributes defined: aria-controls,aria-expanded"
+      },
+      {
+        "file": "src/components/RecipeCard.tsx",
+        "area": "produkcinis",
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": "klaida",
+        "line": 19,
+        "message": "Calling setState synchronously within an effect can trigger cascading renders"
+      }
+    ]
+  },
+  "typescript": {
+    "errors": 0
+  },
+  "npmAudit": {
+    "counts": {
+      "info": 0,
+      "low": 4,
+      "moderate": 33,
+      "high": 11,
+      "critical": 2,
+      "total": 50
+    },
+    "prodCounts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 1,
+      "high": 6,
+      "critical": 1,
+      "total": 8
+    },
+    "packages": [
+      {
+        "name": "handlebars",
+        "severity": "critical",
+        "direct": false,
+        "advisories": 11,
+        "via": "Handlebars.js has JavaScript Injection via AST Type Confusion by tampering @partial-block; Handlebars.js has JavaScript Injection via AST Type Confusion (+9)",
+        "fix": "taip"
+      },
+      {
+        "name": "next",
+        "severity": "critical",
+        "direct": true,
+        "advisories": 39,
+        "via": "Next.js: HTTP request smuggling in rewrites; Next.js: Unbounded next/image disk cache growth can exhaust storage (+37)",
+        "fix": "next@16.4.4"
+      },
+      {
+        "name": "brace-expansion",
+        "severity": "high",
+        "direct": false,
+        "advisories": 8,
+        "via": "brace-expansion: Zero-step sequence causes process hang and memory exhaustion; brace-expansion: Large numeric range defeats documented `max` DoS protection (+6)",
+        "fix": "taip"
+      },
+      {
+        "name": "browserslist",
+        "severity": "high",
+        "direct": false,
+        "advisories": 2,
+        "via": "Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM; Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)",
+        "fix": "taip"
+      },
+      {
+        "name": "flatted",
+        "severity": "high",
+        "direct": false,
+        "advisories": 1,
+        "via": "Prototype Pollution via parse() in NodeJS flatted",
+        "fix": "taip"
+      },
+      {
+        "name": "js-yaml",
+        "severity": "high",
+        "direct": false,
+        "advisories": 4,
+        "via": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases; js-yaml: YAML merge-key chains can force quadratic CPU consumption (+2)",
+        "fix": "taip"
+      },
+      {
+        "name": "nanoid",
+        "severity": "high",
+        "direct": false,
+        "advisories": 3,
+        "via": "nanoid: non-secure generators can loop indefinitely with negative size; nanoid: custom generators can loop indefinitely when size is zero (+1)",
+        "fix": "taip"
+      },
+      {
+        "name": "picomatch",
+        "severity": "high",
+        "direct": false,
+        "advisories": 2,
+        "via": "Picomatch: Method Injection in POSIX Character Classes causes incorrect Glob Matching; Picomatch has a ReDoS vulnerability via extglob quantifiers",
+        "fix": "taip"
+      },
+      {
+        "name": "postcss",
+        "severity": "high",
+        "direct": false,
+        "advisories": 4,
+        "via": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output; PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments (+2)",
+        "fix": "next@16.4.4"
+      },
+      {
+        "name": "sharp",
+        "severity": "high",
+        "direct": false,
+        "advisories": 3,
+        "via": "sharp inherited vulnerabilities in libvips: CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591; sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545 (+1)",
+        "fix": "next@16.4.4"
+      },
+      {
+        "name": "source-map-js",
+        "severity": "high",
+        "direct": false,
+        "advisories": 1,
+        "via": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+        "fix": "taip"
+      },
+      {
+        "name": "ws",
+        "severity": "high",
+        "direct": false,
+        "advisories": 2,
+        "via": "ws: Uninitialized memory disclosure; ws: Memory exhaustion DoS from tiny fragments and data chunks",
+        "fix": "taip"
+      },
+      {
+        "name": "zod",
+        "severity": "high",
+        "direct": false,
+        "advisories": 1,
+        "via": "Zod can exhaust memory while validating oversized constrained collections",
+        "fix": "taip"
+      },
+      {
+        "name": "@eslint-community/eslint-utils",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per eslint",
+        "fix": "eslint@4.0.0 (major)"
+      },
+      {
+        "name": "@eslint/config-array",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per minimatch",
+        "fix": "eslint@4.0.0 (major)"
+      },
+      {
+        "name": "@eslint/eslintrc",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per minimatch",
+        "fix": "eslint@4.0.0 (major)"
+      },
+      {
+        "name": "@humanfs/node",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "humanfs: Recursive copy follows symlinked files and copies data from outside the source tree",
+        "fix": "taip"
+      },
+      {
+        "name": "@jest/core",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 7,
+        "via": "per @jest/reporters; per @jest/transform (+5)",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "@jest/expect",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per jest-snapshot",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "@jest/globals",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per @jest/expect",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "@jest/reporters",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 2,
+        "via": "per @jest/transform; per glob",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "@jest/transform",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per babel-plugin-istanbul",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "@typescript-eslint/eslint-plugin",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 4,
+        "via": "per @typescript-eslint/parser; per @typescript-eslint/type-utils (+2)",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "@typescript-eslint/parser",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 2,
+        "via": "per @typescript-eslint/typescript-estree; per eslint",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "@typescript-eslint/type-utils",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 3,
+        "via": "per @typescript-eslint/typescript-estree; per @typescript-eslint/utils (+1)",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "@typescript-eslint/typescript-estree",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per minimatch",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "@typescript-eslint/utils",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 3,
+        "via": "per @eslint-community/eslint-utils; per @typescript-eslint/typescript-estree (+1)",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "babel-jest",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 2,
+        "via": "per @jest/transform; per babel-plugin-istanbul",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "babel-plugin-istanbul",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per test-exclude",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "baseline-browser-mapping",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "baseline-browser-mapping process termination on invalid input causes denial of service",
+        "fix": "taip"
+      },
+      {
+        "name": "eslint",
+        "severity": "moderate",
+        "direct": true,
+        "advisories": 4,
+        "via": "per @eslint-community/eslint-utils; per @eslint/config-array (+2)",
+        "fix": "eslint@4.0.0 (major)"
+      },
+      {
+        "name": "eslint-config-next",
+        "severity": "moderate",
+        "direct": true,
+        "advisories": 5,
+        "via": "per eslint; per eslint-plugin-import (+3)",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "eslint-plugin-import",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per minimatch",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "eslint-plugin-jsx-a11y",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per minimatch",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "eslint-plugin-react",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per minimatch",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "glob",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 2,
+        "via": "Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal; per minimatch",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "jest-circus",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 3,
+        "via": "per @jest/expect; per jest-runtime (+1)",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "jest-config",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 5,
+        "via": "per babel-jest; per deepmerge (+3)",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "jest-resolve-dependencies",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per jest-snapshot",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "jest-runner",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 2,
+        "via": "per @jest/transform; per jest-runtime",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "jest-runtime",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 4,
+        "via": "per @jest/globals; per @jest/transform (+2)",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "jest-snapshot",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "per @jest/transform",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "minimatch",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "minimatch has potential denial of service via globparts amplification",
+        "fix": "eslint@4.0.0 (major)"
+      },
+      {
+        "name": "test-exclude",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 2,
+        "via": "per glob; per minimatch",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "typescript-eslint",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 5,
+        "via": "per @typescript-eslint/eslint-plugin; per @typescript-eslint/parser (+3)",
+        "fix": "eslint-config-next@0.2.4 (major)"
+      },
+      {
+        "name": "ts-jest",
+        "severity": "moderate",
+        "direct": true,
+        "advisories": 3,
+        "via": "per @jest/transform; per babel-jest (+1)",
+        "fix": "ts-jest@29.1.2 (major)"
+      },
+      {
+        "name": "@babel/core",
+        "severity": "low",
+        "direct": false,
+        "advisories": 1,
+        "via": "@babel/core: Arbitrary File Read via sourceMappingURL Comment",
+        "fix": "taip"
+      },
+      {
+        "name": "deepmerge",
+        "severity": "low",
+        "direct": false,
+        "advisories": 1,
+        "via": "deepmerge mergeObject() allows prototype poisoning of returned objects",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "jest",
+        "severity": "low",
+        "direct": true,
+        "advisories": 2,
+        "via": "per @jest/core; per jest-cli",
+        "fix": "jest@25.1.0 (major)"
+      },
+      {
+        "name": "jest-cli",
+        "severity": "low",
+        "direct": false,
+        "advisories": 2,
+        "via": "per @jest/core; per jest-config",
+        "fix": "jest@25.1.0 (major)"
+      }
+    ],
+    "prodPackages": [
+      {
+        "name": "next",
+        "severity": "critical",
+        "direct": true,
+        "advisories": 39,
+        "via": "Next.js: HTTP request smuggling in rewrites; Next.js: Unbounded next/image disk cache growth can exhaust storage (+37)",
+        "fix": "next@16.4.4"
+      },
+      {
+        "name": "nanoid",
+        "severity": "high",
+        "direct": false,
+        "advisories": 3,
+        "via": "nanoid: non-secure generators can loop indefinitely with negative size; nanoid: custom generators can loop indefinitely when size is zero (+1)",
+        "fix": "taip"
+      },
+      {
+        "name": "postcss",
+        "severity": "high",
+        "direct": false,
+        "advisories": 4,
+        "via": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output; PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments (+2)",
+        "fix": "next@16.4.4"
+      },
+      {
+        "name": "sharp",
+        "severity": "high",
+        "direct": false,
+        "advisories": 3,
+        "via": "sharp inherited vulnerabilities in libvips: CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591; sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545 (+1)",
+        "fix": "next@16.4.4"
+      },
+      {
+        "name": "source-map-js",
+        "severity": "high",
+        "direct": false,
+        "advisories": 1,
+        "via": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+        "fix": "taip"
+      },
+      {
+        "name": "ws",
+        "severity": "high",
+        "direct": false,
+        "advisories": 2,
+        "via": "ws: Uninitialized memory disclosure; ws: Memory exhaustion DoS from tiny fragments and data chunks",
+        "fix": "taip"
+      },
+      {
+        "name": "zod",
+        "severity": "high",
+        "direct": false,
+        "advisories": 1,
+        "via": "Zod can exhaust memory while validating oversized constrained collections",
+        "fix": "taip"
+      },
+      {
+        "name": "baseline-browser-mapping",
+        "severity": "moderate",
+        "direct": false,
+        "advisories": 1,
+        "via": "baseline-browser-mapping process termination on invalid input causes denial of service",
+        "fix": "taip"
+      }
+    ]
+  }
+}
