@@ -12,8 +12,6 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Kokybės analizės skriptas ir jo ataskaitos (1 ND)
-    "quality/**",
   ]),
 ]);
 
